@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+modules/
+inputs/
+dist/
+upstream-xautodaily/
+LSPatch.jar
+sources.json
+versions.json
+modules.json
+release-notes.md

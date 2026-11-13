@@ -1,114 +1,62 @@
-# MQGA - MAKE QQ GREAT AGAIN!
+# MQGA — 六模块 QQ 自动打包
 
-## 这个项目是做什么的
+使用 [JingMatrix/LSPatch](https://github.com/JingMatrix/LSPatch) 修补 QQ arm64 APK，默认打入 QAuxiliary、QFun、QWish、XAutoDaily、TSBattery 和 ImPad。
 
-~~**“让QQ再次伟大！”**~~
+[运行工作流](https://github.com/Zolmid/MQGA/actions/workflows/main.yml) · [下载已验证的构建](https://github.com/Zolmid/MQGA/releases)
 
-本项目使用 [LSPatch](https://github.com/LSPosed/LSPatch) 和 [GitHub Action](https://github.com/features/actions) 自动化修补 QQ APK 并集成 LSPosed 模块。
+## 模块来源
 
-您可以通过修改项目中的 `config.yml` 配置文件，自由选择需要集成的模块或指定 QQ 版本。
+每次运行先查询最新来源，再锁定本次使用的 commit、run、artifact 或 release asset。后续下载使用锁定结果，不会在构建中途再次查询“最新版”。
 
-该仓库默认打包最新版 QQ，并集成以下模块：
+| 模块 | 默认来源 | 说明 |
+| --- | --- | --- |
+| [QAuxiliary](https://github.com/cinit/QAuxiliary) | 最新成功上游 CI | 默认分支 push/manual 构建，arm64 release APK |
+| [QFun](https://github.com/oneQAQone/QFun) | 最新官方发布包 | 当前公开仓库没有 APK 编译 CI；从官方模块分发仓库获取 |
+| [QWish](https://github.com/Xposed-Modules-Repo/top.qwish.xposed) | 最新官方发布包 | 作者网站自动同步的发布 APK；GitHub 同步任务不是编译 CI |
+| [XAutoDaily](https://github.com/LuckyPray/XAutoDaily) | 本仓库 CI 编译最新源码 | 锁定最新 master 与递归子模块，构建 Debug APK |
+| [TSBattery](https://github.com/fankes/TSBattery) | 最新成功上游 CI | 默认分支 push/manual 构建，legacy release APK |
+| [ImPad](https://github.com/NKU100/ImPad) | 最新成功上游 CI | 默认分支 APK 构建中的 impad-module-apk，release APK |
 
-- [QAuxiliary](https://github.com/cinit/QAuxiliary)
-- [XAutoDaily](https://github.com/LuckyPray/XAutoDaily)
-- [TSBattery](https://github.com/fankes/TSBattery)
+上游 CI 只选成功、未过期且来源明确的产物，不选 PR 构建。下载失败、空 APK、包名不符或不唯一的匹配均直接失败，不会把其他来源的包默认为 CI。
 
-（如果发现有更多好玩好用的模块，欢迎[提交 Issue 推荐给我们](https://github.com/Hakuin123/MQGA/issues/new)）
+XAutoDaily 当前未提供官方 APK CI。它的 Release 构建检查作者签名，因此使用上游现成的 Debug 构建模式，不修改其签名校验代码。QFun 和 QWish 的来源明确记录为官方发布包。
 
+## 使用
 
-## 获取方式
+修改 `config.yml` 的六个模块开关和 QQ 来源后提交到 main，会自动构建。也可在 **Actions → Release → Run workflow** 手动执行。保留每周四 01:30 UTC 的自动运行计划；“最新”指每次运行时解析的最新可用来源。
 
-> [!CAUTION]
-> 近期 QQ 官方加大了对模块 Hook 检测的力度，使用模块可能导致您的账号被**异常下线**、**限制社交功能**乃至**一定程度的封禁**，请**自行**判断您是否要使用模块。
+自定义 QQ 可在 **Actions → Custom** 填写版本号和 APK 直链，或填写 Release 工作流的 `qq_version` 与 `qq_url` 两项。两个入口使用同一条模块下载、构建与验证流程。
 
-> [!WARNING]
-> 免责声明：本项目仅提供服务整合，QQ 安装包及模块均由第三方提供，如在使用中出现问题，本项目不对此负任何责任。使用/下载本项目或本项目提供的资源即表示同意上述声明。
+`force.enable: true` 保留当前仓库每次运行均打包的行为。设为 `false` 后，只有 QQ、模块、LSPatch 或构建配方变化才会打包。
 
-### 自定义修补 QQ APK / 模块（推荐）
+模块开关只控制打入哪些模块。模块内部功能的默认设置、重复功能归属和预置方式需另外确认；打包不会自动把每个模块的全部功能打开。
 
-1. [登录 GitHub 账户](https://github.com/signin)，然后点击右上角的 [Fork](https://github.com/Hakuin123/MQGA/fork)，将本项目复制到您的账号下  
-  > 注意：新 Fork 的仓库默认关闭 Actions，需要手动开启
-2. 进入**您自己账号下 Fork 后的仓库**页面，点击顶部的`Actions`标签页  
-3. 在页面提示中点击`I understand my workflows, go ahead and enable them`，以启用该仓库的 Actions 功能
-4. 返回仓库主界面，找到并编辑`config.yml`文件（根据注释修改，添加您需要的 QQ APK 或模块）
-5. 保存并提交更改
+## 产物与校验
 
-此时 GitHub Action 会自动开始运行，恭喜您，所有步骤都已完成！
-等待 Actions 运行结束后，您可以在自己仓库的 **Releases** 页面找到修补好的安装包进行下载。
+发布前检查下载文件完整性、APK 结构、模块包名，以及成品 `assets/lspatch/modules/` 中是否包含每个选定模块的原始 APK 字节。上游提供 SHA-256 时同时验证下载摘要。
 
-请注意，本项目会在**每周四**自动检查 QQ 和各模块的版本更新。如果检测到有新版本，会自动按照您的配置修补并发布到 Releases。
+Release 包含：
 
-> 注意：如果您的仓库 60 天内没有任何活动，GitHub 会自动禁用 Actions，并通过邮件等方式通知您。只需按照提示重新启用即可继续使用。
+- 修补后的 QQ APK。
+- `sources.json`：锁定的下载与源码来源。
+- `versions.json`：版本和构建配方身份，用于更新判断。
+- `modules.json`：实际打入的模块、包名、版本、来源和 SHA-256。
 
-### 下载经过修补的 QQ Android 最新版
-请在 [Releases](https://github.com/Hakuin123/MQGA/releases) 下载已修补完成的最新版 QQ。
-最新 Release 构建状态：![状态badge](https://github.com/Hakuin123/MQGA/actions/workflows/main.yml/badge.svg) 
+Actions 另保留下载的模块 APK，以及本仓库生成的 XAutoDaily CI APK，便于核对同一构建使用的文件。
 
-> [!TIP]
-> 想要在每次修补完成时第一时间收到通知？
-> 1. 先[登录 GitHub 账户](https://github.com/signin)
-> 2. 打开本项目页面，点击页面右上角的 `Watch`（眼睛图标）
-> 3. 选择 `Custom`
-> 4. 勾选 `Releases`，然后点击 `Apply` 保存
-> 设置完成后，每当有新的 [Release](https://github.com/Hakuin123/MQGA/releases) 发布，您都会收到 GitHub 的提醒。此方法适用于所有 GitHub 项目。
->
-> 您自己的仓库默认会通知您所有事项，包括 Release 的发布。
+这些检查验证安装包组成；模块功能是否适配当前 QQ、Android 版本，以及平板登录是否允许同时在线，仍需设备上验证。
 
-### 尝试修补一次自定义 QQ Android 版本（停止维护）
-<details><summary>点击这里展开教程</summary>
-<p>
+## 跨仓库 CI 下载权限
 
-> [!WARNING]
-> 本功能已被开发者停止维护，后续可能被移除，但欢迎提交 PR 帮助优化该功能
+默认使用工作流 token。当前仓库此前已成功下载 QA 与 TSBattery 的跨仓库 CI 产物；若后续 GitHub 对上游产物返回认证或权限错误，可配置具有相应上游 Actions 读取权限的 `CI_ARTIFACT_TOKEN` secret。下载失败会直接显示原因，不会发布缺模块的安装包。
 
-1. [登录 GitHub 账户](https://github.com/signin)，然后 [Fork](https://github.com/Hakuin123/MQGA/fork) 此仓库
-2. 在**你自己 Fork 完成的仓库**（带有你自己的用户名）页面顶部点击 `Actions`
-3. 点击 `All workflows` -> 点击 `Custom`
-4. 点击横幅 `This workflow has a workflow_dispatch event trigger.` 右边的 `Run workflow`
-5. 在弹出的窗口内填写下列内容：
-  - **自定义版本号**  输入你所自定义的 QQ Android 版本（仅作名称标识作用，是否正确填写对于实际修补无影响）
-  - **指定下载链接**  输入 QQ/TIM Android 安装包直链
-  - **模块版本通道**  选择使用正式版（default）还是测试版（CI）的模块
-6. 填写完成后点击`Run workflow`并刷新页面，等待新增的工作流 `Custom `完成（图标由黄色变为绿色），点开这个~~刚冒出来的花里胡哨变色的~~ `Custom`
-7. 在 `Artifacts` 找到修补完成的 `.apk` 文件，点击以下载（注意若未登录 GitHub 则无法下载）
+## 本地验证
 
-> 若 Actions 执行失败（状态为红色），请自行检查输入的安装包链接是否为直链，也就是说输入的链接在浏览器打开后能够自动下载安装包。可百度或在 QQ 官网自行获取直链。
+```bash
+python3 -m unittest discover -s tests -v
+```
 
-</p>
-</details>
+下载器和校验器位于 `.github/scripts/ci_modules.py`。XAutoDaily 编译使用 JDK 17，LSPatch 使用 JDK 21。
 
+本分支基于 [Hakuin123/MQGA](https://github.com/Hakuin123/MQGA)。QQ 和模块由各自上游提供。
 
-## 计划实现的功能
-
-- [x] 借助 GitHub Actions 修补QQ #1
-- [x] 修补时自动下载最新版本 QQ（使用固定连接） #2
-- [x] ~~当 QQ / 模块更新时自动重新修补~~ 固定每周检查更新并重新修补
-
-
-## 推荐的 QQ Android 版本
-
-> 以下版本无论是否使用模块均可获得相对较好的体验，欢迎尝试
-
-### [QQ NT（当前最新版）](https://im.qq.com/index/#downloadAnchor)
-最新版 QQ 基于 [Electron](https://www.electronjs.org/zh/) 重构，同时更改了聊天消息存储结构，性能得到大幅提升，若未尝试过 8.9.63 及以上版本则极力推荐尝试
-
-但请注意，基于最新版 QQ 修补的版本，部分模块功能可能因为未适配而失效，请酌情使用
-
-### [QQ 8.9.58.11175](https://web.archive.org/web/20230712132702/https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk)
-最后一个**不**基于 QQ_NT 的版本（[原链接](https://downv6.qq.com/qqweb/QQ_1/android_apk/Android_8.9.58_64_HB2.apk)已失效，此处为 `web.archive.org` 存档）
-
-### [QQ 8.8.50.6735](https://dldir1.qq.com/qqfile/qq/expcenter/1458/28d2b3f249db11ec819ad00d4e61d76c/qq_8.8.50.6735_rb4227cab_v2324_release.apk)
-最后一个不是 3A 大作（未内置虚幻引擎 4，无超级 QQ 秀）的版本
-
-### [TIM NT（当前最新版）](https://office.qq.com/download.html)
-极为简洁的 QQ 官方修改版，4.0.0 后底包基于 QQ 9.0.95（QQ NT 版本）
-
-### [TIM 3.4.8](https://web.archive.org/web/20221126093522/https://downv6.qq.com/qqweb/QQ_1/android_apk/tim_3.4.8.3108_537129495_64.apk)
-（相对没那么推荐）底包基于 QQ 8.3.9 ，邮箱入口不会被云控移除，日历功能也保留（但有反馈说无法登录）
-（[原链接](https://downv6.qq.com/qqweb/QQ_1/android_apk/tim_3.4.8.3108_537129495_64.apk)已失效，此处为 `web.archive.org` 存档）
-
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Hakuin123/MQGA&type=date&legend=top-left)](https://www.star-history.com/#Hakuin123/MQGA&type=date&legend=top-left)

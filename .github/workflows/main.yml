@@ -1,471 +1,206 @@
-# MQGA replacement workflow: QA/TSBattery upstream CI (2026-11-13).
-# Set LSPatch.repo to JingMatrix/LSPatch in config.yml for the newer framework.
-# XAutoDaily still follows its stable Release; its unmerged PR #157 is not included.
-# Optional CI_ARTIFACT_TOKEN: a token authorized to read upstream Actions artifacts.
 name: Release
-
 run-name: "Patch QQ #${{ github.run_number }}"
 
-# 控制工作流何时运行
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: "30 1 * * 4"
-  # Runs at 01:30 (UTC time), only on Thursday
-  # “肯德基疯狂星期四”仅限9:30-23:00供应，具体以餐厅实际营业时间为准。
-  # https://docs.github.com/zh/actions/using-workflows/events-that-trigger-workflows#repository_dispatch
   repository_dispatch:
     types: [release]
-
-  # 每次提交时运行工作流
-  push:
-    branches: ["main"]
-
-  # 允许手动运行工作流
   workflow_dispatch:
+    inputs:
+      qq_version:
+        description: "自定义 QQ 版本号；留空使用 config.yml"
+        type: string
+        default: ""
+      qq_url:
+        description: "自定义 QQ arm64 APK 直链；须与版本号一起填写"
+        type: string
+        default: ""
+      force:
+        description: "即使版本未变也重新打包"
+        type: boolean
+        default: false
+  workflow_call:
+    inputs:
+      qq_version:
+        type: string
+        default: ""
+      qq_url:
+        type: string
+        default: ""
+      force:
+        type: boolean
+        default: false
+    secrets:
+      CI_ARTIFACT_TOKEN:
+        required: false
 
 permissions:
   contents: write
   actions: read
 
-env:
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+concurrency:
+  group: mqga-release-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
-  check-updates:
-    name: Check for Updates | 检查更新
+  build:
+    name: Resolve, build and verify six modules
     runs-on: ubuntu-latest
-    outputs:
-      patch_needed: ${{ steps.version_check.outputs.patch_needed }}
-      QAuxiliary_run_id: ${{ steps.ci_modules.outputs.QAuxiliary_run_id }}
-      QAuxiliary_artifact_id: ${{ steps.ci_modules.outputs.QAuxiliary_artifact_id }}
-      TSBattery_run_id: ${{ steps.ci_modules.outputs.TSBattery_run_id }}
-      TSBattery_artifact_id: ${{ steps.ci_modules.outputs.TSBattery_artifact_id }}
-      QQ_version: ${{ steps.get_qq_version.outputs.QQ_version }}
-      QAuxiliary_version: ${{ steps.ci_modules.outputs.QAuxiliary_release }}
-      XAutoDaily_version: ${{ steps.XAutoDaily.outputs.release }}
-      TSBattery_version: ${{ steps.ci_modules.outputs.TSBattery_release }}
-      QQCleaner_version: ${{ steps.QQCleaner.outputs.release }}
-      LSPatch_version: ${{ steps.LSPatch.outputs.release }}
-
-      QAuxiliary_description: ${{ steps.ci_modules.outputs.QAuxiliary_description }}
-      XAutoDaily_description: ${{ steps.XAutoDaily.outputs.description }}
-      TSBattery_description: ${{ steps.ci_modules.outputs.TSBattery_description }}
-      QQCleaner_description: ${{ steps.QQCleaner.outputs.description }}
-
+    timeout-minutes: 60
     steps:
-      - name: Checkout | 检出代码
+      - name: Checkout MQGA
         uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
-      - name: Set ENV values from config.yml | 从配置文件设置环境变量
+      - name: Test module resolution and embedded APK checks
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Read config.yml
         uses: dcarbone/yaml-to-env-action@v3.0.1
         with:
           yaml-file: config.yml
 
-      # 模块版本检测
-      - name: Resolve latest upstream CI modules | 获取模块最新成功 CI
-        id: ci_modules
+      - name: Lock latest module, QQ and LSPatch sources
+        id: resolve
         env:
           GH_TOKEN: ${{ secrets.CI_ARTIFACT_TOKEN || github.token }}
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import fnmatch
-          import json
-          import os
-          import subprocess
-          from urllib.parse import quote, urlencode
-          
-          def api(path):
-              result = subprocess.run(
-                  ["gh", "api", path], text=True, capture_output=True, check=False
-              )
-              if result.returncode:
-                  raise RuntimeError(
-                      f"GitHub API failed for {path}:\n{result.stderr.strip()}\n"
-                      "For upstream Actions access errors, check CI_ARTIFACT_TOKEN permissions."
-                  )
-              return json.loads(result.stdout)
-          
-          def choose_artifact(run, artifacts, pattern):
-              matches = []
-              for artifact in artifacts:
-                  if artifact.get("expired", False):
-                      continue
-                  if not fnmatch.fnmatchcase(artifact["name"], pattern):
-                      continue
-                  source = artifact.get("workflow_run") or {}
-                  if source.get("head_sha", run["head_sha"]) != run["head_sha"]:
-                      continue
-                  if source.get("id", run["id"]) != run["id"]:
-                      continue
-                  matches.append(artifact)
-              if len(matches) > 1:
-                  raise RuntimeError(f"Run {run['id']} has multiple matching artifacts: {pattern}")
-              return matches[0] if matches else None
-          
-          def eligible_run(run, repo, branch, workflow):
-              return (
-                  run.get("status") == "completed"
-                  and run.get("conclusion") == "success"
-                  and run.get("head_branch") == branch
-                  and run.get("event") in {"push", "workflow_dispatch"}
-                  and (run.get("head_repository") or {}).get("full_name") == repo
-                  and run.get("path", "").split("@", 1)[0] == f".github/workflows/{workflow}"
-              )
-          
-          def resolve_ci(repo, workflow, pattern):
-              branch = api(f"repos/{repo}")["default_branch"]
-              # Select the newest downloadable successful upstream default-branch build.
-              # Do not select PR builds or silently replace release artifacts with debug.
-              for page in range(1, 4):
-                  query = urlencode({
-                      "branch": branch, "status": "success", "per_page": 100, "page": page
-                  })
-                  response = api(
-                      f"repos/{repo}/actions/workflows/{quote(workflow, safe='')}/runs?{query}"
-                  )
-                  runs = response["workflow_runs"]
-                  for run in sorted(runs, key=lambda r: (r["created_at"], r["id"]), reverse=True):
-                      if not eligible_run(run, repo, branch, workflow):
-                          continue
-                      artifacts = api(
-                          f"repos/{repo}/actions/runs/{run['id']}/artifacts?per_page=100"
-                      )["artifacts"]
-                      artifact = choose_artifact(run, artifacts, pattern)
-                      if artifact is None:
-                          continue
-                      version = (
-                          f"ci-{run['head_sha'][:12]}-run{run['id']}"
-                          f"-a{run.get('run_attempt', 1)}-artifact{artifact['id']}"
-                      )
-                      return {
-                          "release": version,
-                          "run_id": str(run["id"]),
-                          "artifact_id": str(artifact["id"]),
-                          "description": (
-                              f"Upstream CI: [{run['head_sha'][:12]}]"
-                              f"(https://github.com/{repo}/commit/{run['head_sha']}); "
-                              f"[run {run['id']}]({run['html_url']}); "
-                              f"artifact: {artifact['name']}"
-                          ),
-                      }
-                  if len(runs) < 100:
-                      break
-              raise RuntimeError(
-                  f"No unexpired {pattern} artifact in successful {repo}/{branch} CI builds."
-              )
-          
-          def main():
-              modules = [
-                  ("QAuxiliary", "MODULES_QAUXILIARY", "cinit/QAuxiliary",
-                   "push_ci.yml", "QAuxiliary-release-*-arm64"),
-                  ("TSBattery", "MODULES_TSBATTERY", "fankes/TSBattery",
-                   "commit_ci.yml", "TSBattery-legacy-release-*"),
-              ]
-              with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
-                  for name, flag, repo, workflow, pattern in modules:
-                      if os.environ.get(flag, "").lower() == "true":
-                          values = resolve_ci(repo, workflow, pattern)
-                          print(f"{name}: {values['description']}")
-                      else:
-                          values = {
-                              "release": "disabled", "run_id": "",
-                              "artifact_id": "", "description": "Disabled in config.yml",
-                          }
-                      for key, value in values.items():
-                          if "\n" in value or "\r" in value:
-                              raise RuntimeError("Unexpected newline in Actions output")
-                          output.write(f"{name}_{key}={value}\n")
-          
-          if __name__ == "__main__":
-              main()
-          PY
+          INPUT_QQ_VERSION: ${{ inputs.qq_version }}
+          INPUT_QQ_URL: ${{ inputs.qq_url }}
+          INPUT_FORCE: ${{ inputs.force }}
+        run: python3 .github/scripts/ci_modules.py resolve
 
-      - name: Get XAutoDaily version | 获取 XAutoDaily 版本
-        id: XAutoDaily
-        uses: pozetroninc/github-action-get-latest-release@v0.8.0
-        with:
-          repository: LuckyPray/XAutoDaily
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download the locked APKs and patcher
+        if: steps.resolve.outputs.patch_needed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.CI_ARTIFACT_TOKEN || github.token }}
+        run: python3 .github/scripts/ci_modules.py fetch
 
-      - name: Get QQCleaner version | 获取 QQCleaner 版本
-        id: QQCleaner
-        uses: pozetroninc/github-action-get-latest-release@v0.8.0
-        with:
-          repository: KitsunePie/QQCleaner
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get LSPatch version | 获取LSPatch版本
-        id: LSPatch
-        uses: pozetroninc/github-action-get-latest-release@v0.8.0
-        with:
-          repository: ${{ ENV.LSPATCH_REPO }}
-          excludes: prerelease, draft
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get QQ Version | 获取 QQ 版本
-        id: get_qq_version
-        run: |
-          response=$(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' https://upage.html5.qq.com/wechat-apkinfo)
-          clean_response=$(echo "$response" | tr -cd '[:print:]')
-          version_name=$(echo "$clean_response" | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.version_name')
-          # 设置输出变量
-          echo "QQ_version=$version_name" >> $GITHUB_OUTPUT
-
-      # 版本比对逻辑
-      - name: Version Comparison | 版本比对
-        id: version_check
-        run: |
-          # 获取历史版本号记录
-          gh release download -O versions.json --pattern 'versions.json' || echo "{}" > versions.json
-
-          # 生成当前版本号数据
-          current_versions=$(jq -n \
-            --arg QQ_version "${{ steps.get_qq_version.outputs.QQ_version }}" \
-            --arg QAuxiliary_version "${{ steps.ci_modules.outputs.QAuxiliary_release }}" \
-            --arg XAutoDaily_version "${{ steps.XAutoDaily.outputs.release }}" \
-            --arg TSBattery_version "${{ steps.ci_modules.outputs.TSBattery_release }}" \
-            --arg QQCleaner_version "${{ steps.QQCleaner.outputs.release }}" \
-            --arg LSPatch_version "${{ steps.LSPatch.outputs.release }}" \
-            '{
-              QQ: $QQ_version,
-              QAuxiliary: $QAuxiliary_version,
-              XAutoDaily: $XAutoDaily_version,
-              TSBattery: $TSBattery_version,
-              QQCleaner: $QQCleaner_version,
-              LSPatch: $LSPatch_version
-            }')
-
-          # 版本比对
-          if [[ "$(cat versions.json)" == "$current_versions" ]]; then
-            echo "::notice::All versions are up-to-date | 所有版本均为最新版"
-            # 强制模式检查
-            if [[ "${{ env.FORCE_ENABLE }}" == "true" ]]; then
-              echo "::notice::Force mode enabled, patching anyway | 强制模式已启用，仍执行修补"
-              echo "$current_versions" > versions.json
-              echo "patch_needed=true" >> $GITHUB_OUTPUT
-            else
-              echo "patch_needed=false" >> $GITHUB_OUTPUT
-            fi
-          else
-            echo "::notice::New version detected | 检测到新版本"
-            echo "$current_versions" > versions.json
-            echo "patch_needed=true" >> $GITHUB_OUTPUT
-          fi
-
-      # 上传版本信息记录文件
-      - name: Upload version info | 上传版本信息
+      - name: Keep downloaded modules and source provenance
+        if: steps.resolve.outputs.patch_needed == 'true'
         uses: actions/upload-artifact@v7
-        if: steps.version_check.outputs.patch_needed == 'true'
         with:
-          name: version-info
-          path: versions.json
+          name: downloaded-modules-${{ github.run_id }}
+          path: |
+            modules/*.apk
+            sources.json
+          if-no-files-found: error
+          retention-days: 14
 
-  patch:
-    name: Patch QQ | 修补 QQ
-    needs: check-updates
-    if: needs.check-updates.outputs.patch_needed == 'true'
-    runs-on: ubuntu-latest
-    outputs:
-      module_list: ${{ steps.patch_qq.outputs.module_list }}
-
-    steps:
-      - name: Checkout | 检出代码
-        uses: actions/checkout@v7
-
-      - name: Setup Java JDK | 设置 Java JDK
+      - name: Set up JDK 17 for XAutoDaily
+        if: steps.resolve.outputs.patch_needed == 'true'
         uses: actions/setup-java@v6
         with:
-          distribution: "temurin"
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Android SDK tools
+        if: steps.resolve.outputs.patch_needed == 'true'
+        uses: android-actions/setup-android@v3
+
+      - name: Checkout exact XAutoDaily source and submodules
+        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
+        uses: actions/checkout@v7
+        with:
+          repository: LuckyPray/XAutoDaily
+          ref: ${{ steps.resolve.outputs.xad_sha }}
+          path: upstream-xautodaily
+          submodules: recursive
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Install XAutoDaily build dependencies
+        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
+        run: |
+          sdkmanager --install "platforms;android-32" "platforms;android-33" "build-tools;33.0.1" "ndk;27.0.12077973" "cmake;3.22.1"
+
+      - name: Build latest XAutoDaily source as Debug
+        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
+        working-directory: upstream-xautodaily
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon :app:assembleDebug --stacktrace
+
+      - name: Collect XAutoDaily CI APK
+        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
+        run: |
+          mkdir -p modules
+          cp upstream-xautodaily/app/build/outputs/apk/debug/app-debug.apk modules/XAutoDaily.apk
+
+      - name: Keep XAutoDaily CI build
+        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: xautodaily-ci-${{ steps.resolve.outputs.xad_sha }}
+          path: modules/XAutoDaily.apk
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Verify APK packages and write module manifest
+        if: steps.resolve.outputs.patch_needed == 'true'
+        id: modules
+        run: python3 .github/scripts/ci_modules.py finalize
+
+      - name: Set up JDK 21 for LSPatch
+        if: steps.resolve.outputs.patch_needed == 'true'
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
           java-version: "21"
 
-      - name: Set ENV values from config.yml | 从配置文件设置环境变量
-        uses: dcarbone/yaml-to-env-action@v3.0.1
-        with:
-          yaml-file: config.yml
-
-      # 下载版本记录资源
-      - name: Download version info | 下载版本信息
-        uses: actions/download-artifact@v8
-        with:
-          name: version-info
-          path: .
-
-      - name: Download Custom QQ | 下载自定义 QQ 版本
-        if: ENV.QQ_CUSTOM_ENABLE == 'true'
-        run: |
-          wget -q -U "Mozilla/5.0" -O QQ-${{ env.QQ_CUSTOM_VERSION }}.apk "${{ ENV.QQ_CUSTOM_URL }}"
-
-      - name: Download Latest QQ | 下载最新版 QQ
-        if: ENV.QQ_LATEST_ENABLE == 'true'
-        run: |
-          wget -q -U "Mozilla/5.0" -O "QQ-${{ needs.check-updates.outputs.QQ_version }}-latest.apk" \
-            $(curl -s -X POST -H "Content-Type: application/json" -d '{"packagename":"com.tencent.mobileqq"}' \
-            https://upage.html5.qq.com/wechat-apkinfo | tr -cd '[:print:]' | jq -r '.app_detail_records."com.tencent.mobileqq".apk_all_data.url')
-
-      # 下载 LSPatch
-      - name: Download LSPatch | 下载 LSPatch
-        run: |
-          if [ "${{ env.LSPATCH_REPO }}" = "JingMatrix/LSPatch" ]; then
-            gh release download -O LSPatch.jar --repo "JingMatrix/LSPatch" --pattern 'lspatch-*-release.jar'
-          else
-            gh release download -O LSPatch.jar --repo "${{ env.LSPATCH_REPO }}" --pattern '*.jar'
-          fi
-
-      - name: Download QAuxiliary CI | 下载锁定的 QA CI
-        if: env.MODULES_QAUXILIARY == 'true'
-        uses: actions/download-artifact@v8
-        with:
-          github-token: ${{ secrets.CI_ARTIFACT_TOKEN || github.token }}
-          repository: cinit/QAuxiliary
-          run-id: ${{ needs.check-updates.outputs.QAuxiliary_run_id }}
-          artifact-ids: ${{ needs.check-updates.outputs.QAuxiliary_artifact_id }}
-          path: ci-modules/QAuxiliary
-          merge-multiple: true
-
-      - name: Download TSBattery CI | 下载锁定的 TSBattery CI
-        if: env.MODULES_TSBATTERY == 'true'
-        uses: actions/download-artifact@v8
-        with:
-          github-token: ${{ secrets.CI_ARTIFACT_TOKEN || github.token }}
-          repository: fankes/TSBattery
-          run-id: ${{ needs.check-updates.outputs.TSBattery_run_id }}
-          artifact-ids: ${{ needs.check-updates.outputs.TSBattery_artifact_id }}
-          path: ci-modules/TSBattery
-          merge-multiple: true
-
-      - name: Normalize CI APK names | 整理模块 APK
-        shell: bash
+      - name: Patch QQ with the verified module list
+        if: steps.resolve.outputs.patch_needed == 'true'
+        env:
+          MODULE_LIST: ${{ steps.modules.outputs.module_list }}
         run: |
           python3 - <<'PY'
           import os
+          import subprocess
           from pathlib import Path
-          import shutil
-          for name, flag, pattern in [
-              ('QAuxiliary', 'MODULES_QAUXILIARY', '*arm64.apk'),
-              ('TSBattery', 'MODULES_TSBATTERY', '*-legacy-release.apk'),
-          ]:
-              if os.environ.get(flag, '').lower() != 'true':
-                  continue
-              files = [p for p in (Path('ci-modules') / name).rglob(pattern) if p.is_file()]
-              if len(files) != 1:
-                  raise SystemExit(f'{name}: expected one {pattern} APK, found {len(files)}')
-              shutil.copyfile(files[0], f'{name}.apk')
-              print(f'{name}.apk <- {files[0]}')
+
+          apks = sorted(Path("inputs").glob("QQ-*.apk"))
+          if not apks:
+              raise SystemExit("No QQ APK was downloaded")
+          subprocess.run([
+              "java", "-jar", "LSPatch.jar", *map(str, apks),
+              "-m", os.environ["MODULE_LIST"], "-l", "2", "-o", "dist",
+          ], check=True)
           PY
 
-      - name: Download Preset Modules | 下载预设模块
-        run: |
-          # 动态下载启用的预设模块
-          if [ "${{ env.MODULES_XAUTODAILY }}" = "true" ]; then
-            gh release download -O XAutoDaily.apk --repo LuckyPray/XAutoDaily --pattern '*.apk'
-          fi
-          if [ "${{ env.MODULES_QQCLEANER }}" = "true" ]; then
-            gh release download -O QQCleaner.apk --repo KitsunePie/QQCleaner --pattern '*.apk'
-          fi
+      - name: Check every selected module is embedded byte-for-byte
+        if: steps.resolve.outputs.patch_needed == 'true'
+        run: python3 .github/scripts/ci_modules.py verify-patched --dist dist
 
-      - name: Download Custom Modules | 下载自定义模块
-        if: env.MODULES_CUSTOM_ENABLE == 'true'
-        run: |
-          # 获取模块数量
-          count=$(yq eval '.modules.custom.list | length' config.yml)
-          echo "Found $count custom modules | 找到 $count 个自定义模块"
-          
-          # 遍历下载所有自定义模块
-          for ((i=0; i<count; i++)); do
-            name=$(yq eval ".modules.custom.list[$i].name" config.yml)
-            url=$(yq eval ".modules.custom.list[$i].url" config.yml)
-            
-            # 替换文件名中的非法字符
-            safe_name=$(echo "$name" | tr ' ' '_' | tr -cd '[:alnum:]-_')
-            echo "Downloading $name from $link | 从 $url 下载 $name"
-            
-            wget -q -U "Mozilla/5.0" -O "custom-module-${safe_name}.apk" "$url" || echo "::warning::Failed to download $name | 下载 $name 失败"
-            
-            # 检查文件是否下载成功
-            if [ ! -f "custom-module-${safe_name}.apk" ]; then
-              echo "::error::Custom module $name failed to download | 自定义模块 $name 下载失败"
-            fi
-          done
+      - name: Upload verified build
+        if: steps.resolve.outputs.patch_needed == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: QQ-${{ steps.resolve.outputs.qq_version }}-${{ github.run_id }}
+          path: |
+            dist/*-lspatched.apk
+            versions.json
+            modules.json
+            sources.json
+          if-no-files-found: error
+          retention-days: 14
 
-      - name: Patch QQ | 修补 QQ
-        id: patch_qq
-        run: |
-          # 动态生成模块列表
-          module_list=""
-          
-          # 添加预设模块
-          if [ "${{ env.MODULES_QAUXILIARY }}" = "true" ]; then module_list="${module_list},QAuxiliary.apk"; fi
-          if [ "${{ env.MODULES_XAUTODAILY }}" = "true" ]; then module_list="${module_list},XAutoDaily.apk"; fi
-          if [ "${{ env.MODULES_TSBATTERY }}" = "true" ]; then module_list="${module_list},TSBattery.apk"; fi
-          if [ "${{ env.MODULES_QQCLEANER }}" = "true" ]; then module_list="${module_list},QQCleaner.apk"; fi
-          
-          # 添加自定义模块
-          if [ "${{ env.MODULES_CUSTOM_ENABLE }}" = "true" ]; then
-            for file in custom-module-*.apk; do
-              if [ -f "$file" ]; then
-                module_list="${module_list},$file"
-              fi
-            done
-          fi
-          
-          # 移除 module_list 开头的逗号
-          module_list="${module_list#","}"
-          # 若 module_list 为空，输出提示
-          if [ -z "$module_list" ]; then
-            echo "::warning::No modules selected for patching | 未选择任何模块进行修补"
-          fi
-          echo "模块列表: $module_list"
-          # 输出到 GITHUB_OUTPUT
-          echo "module_list=$module_list" >> $GITHUB_OUTPUT
-
-          # 执行修补
-          java -jar LSPatch.jar QQ-*.apk -m "$module_list" -l 2
-
-      - name: Create Release | 创建 Release
+      - name: Publish verified QQ APK and provenance
+        if: steps.resolve.outputs.patch_needed == 'true'
         uses: softprops/action-gh-release@v3
         with:
+          token: ${{ github.token }}
+          tag_name: Build-${{ github.run_number }}-${{ github.run_id }}
+          target_commitish: ${{ github.sha }}
+          name: "QQ ${{ steps.resolve.outputs.qq_version }} / Build #${{ github.run_number }}"
+          body_path: release-notes.md
+          fail_on_unmatched_files: true
           files: |
-            *-lspatched.apk
+            dist/*-lspatched.apk
             versions.json
-          tag_name: Build#${{ github.run_number }} # 仓库中特定工作流程每个运行的唯一编号（从 1 开始递增）
-          name: "QQ Build #${{ github.run_number }} (with ${{ needs.check-updates.outputs.QQ_version }})" # 使用 QQ 版本号和构建编号作为标题
-          body: |
-            ### 本次修补使用的模块列表
-            **${{ steps.patch_qq.outputs.module_list }}**
+            modules.json
+            sources.json
 
-            ### 所有默认配置项目的最新版本
-            | 项目名称 | 对应版本 | 查看项目 |
-            | ------- | -------- | ------- |
-            | QQ 最新版本 | ${{ needs.check-updates.outputs.QQ_version }}         | [QQ 官网](https://im.qq.com/index) |
-            | QAuxiliary | ${{ needs.check-updates.outputs.QAuxiliary_version }} | [GitHub](https://github.com/cinit/QAuxiliary) |
-            | XAutoDaily | ${{ needs.check-updates.outputs.XAutoDaily_version }} | [GitHub](https://github.com/LuckyPray/XAutoDaily) |
-            | TSBattery  | ${{ needs.check-updates.outputs.TSBattery_version }}  | [GitHub](https://github.com/fankes/TSBattery) |
-            | QQCleaner  | ${{ needs.check-updates.outputs.QQCleaner_version }}  | [GitHub](https://github.com/KitsunePie/QQCleaner) |
-            | LSPatch    | ${{ needs.check-updates.outputs.LSPatch_version }}    | [GitHub](https://github.com/${{ ENV.LSPATCH_REPO }}) |
-
-            <details><summary>点击展开模块更新日志</summary>
-            #### QAuxiliary<br>
-            ${{ needs.check-updates.outputs.QAuxiliary_description }}
-            #### XAutoDaily<br>
-            ${{ needs.check-updates.outputs.XAutoDaily_description }}
-            #### TSBattery<br>
-            ${{ needs.check-updates.outputs.TSBattery_description }}
-            #### QQCleaner<br>
-            ${{ needs.check-updates.outputs.QQCleaner_description }}
-            </details>
-
-            ### 发行说明
-            您应该会在页面下方的 Assets 看到如下文件（若启用对应配置项）：
-            - QQ-${{ env.QQ_CUSTOM_VERSION }}-`LSPatch 内部版本号`-lspatched.apk
-                此为自定义版本(${{ env.QQ_CUSTOM_VERSION }})修补的 QQ APK
-            - QQ-${{ needs.check-updates.outputs.QQ_version }}-latest-`LSPatch 内部版本号`-lspatched.apk
-                此为基于 QQ Android 当前最新版本修补的 QQ APK
-            > 基于最新版 QQ 修补的版本，部分模块功能可能因为未适配而失效，请酌情使用
-            - versions.json
-                此为本次修补使用的版本信息
-
-            **Have fun!**
 
