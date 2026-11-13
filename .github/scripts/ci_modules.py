@@ -41,6 +41,7 @@ MODULES = {
     },
     "XAutoDaily": {
         "repo": "LuckyPray/XAutoDaily", "package": "me.teble.xposed.autodaily",
+        "asset_pattern": "XAutoDaily_*.apk",
     },
     "TSBattery": {
         "repo": "fankes/TSBattery", "package": "com.fankes.tsbattery",
@@ -320,13 +321,7 @@ def resolve(args):
             source = resolve_release(spec["repo"], spec["asset_pattern"])
             source["package"] = spec["package"]
         else:
-            branch = github_api(f"repos/{spec['repo']}")["default_branch"]
-            commit = github_api(f"repos/{spec['repo']}/commits/{quote(branch, safe='')}")
-            if re.fullmatch(r"[0-9a-f]{40}", commit.get("sha", "")) is None:
-                raise BuildError(f"{name}: invalid source commit SHA")
-            source = {"kind": "source-ci", "repo": spec["repo"], "branch": branch,
-                      "sha": commit["sha"], "build": "debug", "package": spec["package"],
-                      "commit_url": commit["html_url"]}
+            raise BuildError(f"{name}: no supported upstream CI or official release source")
         resolved[name] = source
         print(f"{name}: {source['kind']} {source.get('sha', source.get('tag'))}")
     lspatch_repo = os.environ.get("LSPATCH_REPO", "JingMatrix/LSPatch").strip()
@@ -347,10 +342,8 @@ def resolve(args):
     patch_needed = enabled("FORCE_ENABLE") or enabled("INPUT_FORCE") or previous != versions
     write_json(args.sources, sources)
     write_json(args.versions, versions)
-    xad = resolved.get("XAutoDaily", {})
     latest = next((item for item in sources["qq"] if item["kind"] == "latest"), sources["qq"][0])
-    output(patch_needed=patch_needed, xad_enabled=bool(xad), xad_sha=xad.get("sha", ""),
-           qq_version=latest["version"])
+    output(patch_needed=patch_needed, qq_version=latest["version"])
 
 
 def verify_digest(path, digest, label):
@@ -438,8 +431,6 @@ def fetch(args):
             raise BuildError(f"Unknown module in sources.json: {name}")
         destination = Path("modules") / f"{name}.apk"
         destination.unlink(missing_ok=True)
-        if source["kind"] == "source-ci":
-            continue
         if source["kind"] == "upstream-ci":
             with tempfile.TemporaryDirectory(prefix="mqga-artifact-") as directory:
                 archive_path = Path(directory) / "artifact.zip"
@@ -499,9 +490,6 @@ def source_description(source):
     if source["kind"] == "upstream-ci":
         return (f"upstream CI [{source['sha'][:12]}](https://github.com/{source['repo']}/commit/{source['sha']}); "
                 f"[run {source['run_id']}]({source['run_url']}); `{source['artifact_name']}`")
-    if source["kind"] == "source-ci":
-        return (f"MQGA source CI, **self-built debug**; "
-                f"[{source['sha'][:12]}]({source['commit_url']})")
     return f"**official release** [{source['tag']}]({source['release_url']}); `{source['asset_name']}`"
 
 
@@ -528,9 +516,7 @@ def finalize(args):
     if release_modules:
         notes.extend(["", ", ".join(release_modules) + " use their latest official releases because their "
                       "public repositories do not publish downloadable APK CI artifacts."])
-    if "XAutoDaily" in sources["modules"]:
-        notes.extend(["", "XAutoDaily is built from its pinned default-branch commit as a debug APK; "
-                      "it is not represented as an upstream CI download."])
+    notes.extend(["", "MQGA downloads upstream APKs only; no module source is compiled."])
     notes.extend(["", "## QQ and LSPatch", ""])
     for qq in sources["qq"]:
         notes.append(f"- QQ {qq['version']} ({qq['kind']})")

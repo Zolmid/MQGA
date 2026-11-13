@@ -13,13 +13,13 @@
 | [QAuxiliary](https://github.com/cinit/QAuxiliary) | 最新成功上游 CI | 默认分支 push/manual 构建，arm64 release APK |
 | [QFun](https://github.com/oneQAQone/QFun) | 最新官方发布包 | 当前公开仓库没有 APK 编译 CI；从官方模块分发仓库获取 |
 | [QWish](https://github.com/Xposed-Modules-Repo/top.qwish.xposed) | 最新官方发布包 | 作者网站自动同步的发布 APK；GitHub 同步任务不是编译 CI |
-| [XAutoDaily](https://github.com/LuckyPray/XAutoDaily) | 本仓库 CI 编译最新源码 | 锁定最新 master 与递归子模块，构建 Debug APK |
+| [XAutoDaily](https://github.com/LuckyPray/XAutoDaily) | 最新官方发布包 | 上游未提供 APK CI，直接使用官方签名 APK |
 | [TSBattery](https://github.com/fankes/TSBattery) | 最新成功上游 CI | 默认分支 push/manual 构建，legacy release APK |
 | [ImPad](https://github.com/NKU100/ImPad) | 最新成功上游 CI | 默认分支 APK 构建中的 impad-module-apk，release APK |
 
 上游 CI 只选成功、未过期且来源明确的产物，不选 PR 构建。下载失败、空 APK、包名不符或不唯一的匹配均直接失败，不会把其他来源的包默认为 CI。
 
-XAutoDaily 当前未提供官方 APK CI。它的 Release 构建检查作者签名，因此使用上游现成的 Debug 构建模式，不修改其签名校验代码。QFun 和 QWish 的来源明确记录为官方发布包。
+统一来源规则：有已验证的上游 APK CI 就取最新成功构建；没有的取最新官方发布包。QFun、QWish、XAutoDaily 的来源明确记录为官方发布包。本仓库不编译任何模块源码。
 
 ## 使用
 
@@ -42,7 +42,7 @@ Release 包含：
 - `versions.json`：版本和构建配方身份，用于更新判断。
 - `modules.json`：实际打入的模块、包名、版本、来源和 SHA-256。
 
-Actions 另保留下载的模块 APK，以及本仓库生成的 XAutoDaily CI APK，便于核对同一构建使用的文件。
+Actions 另保留下载的六个模块 APK，便于核对同一构建使用的文件。
 
 这些检查验证安装包组成；模块功能是否适配当前 QQ、Android 版本，以及平板登录是否允许同时在线，仍需设备上验证。
 
@@ -56,7 +56,7 @@ Actions 另保留下载的模块 APK，以及本仓库生成的 XAutoDaily CI AP
 python3 -m unittest discover -s tests -v
 ```
 
-下载器和校验器位于 `.github/scripts/ci_modules.py`。XAutoDaily 编译使用 JDK 17，LSPatch 使用 JDK 21。
+下载器和校验器位于 `.github/scripts/ci_modules.py`。LSPatch 使用 JDK 21；Android SDK 工具仅用于读取 APK 包名。
 
 本分支基于 [Hakuin123/MQGA](https://github.com/Hakuin123/MQGA)。QQ 和模块由各自上游提供。
 

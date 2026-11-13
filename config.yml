@@ -8,7 +8,7 @@ modules:
   QAuxiliary: true # 默认分支成功 CI，arm64 release
   QFun: true # 最新官方发布 APK；上游未提供公开 APK CI
   QWish: true # 作者自动同步的最新官方发布 APK
-  XAutoDaily: true # 本仓库 CI 编译上游最新 master 源码，Debug 构建
+  XAutoDaily: true # 最新官方发布 APK；不自行编译
   TSBattery: true # 默认分支成功 CI，legacy release
   ImPad: true # NKU100/ImPad 默认分支成功 CI，release APK
 

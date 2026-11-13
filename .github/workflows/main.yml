@@ -43,11 +43,11 @@ permissions:
 
 concurrency:
   group: mqga-release-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
-    name: Resolve, build and verify six modules
+    name: Resolve and verify six modules
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
@@ -92,12 +92,12 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Set up JDK 17 for XAutoDaily
+      - name: Set up JDK 21 for LSPatch and Android tools
         if: steps.resolve.outputs.patch_needed == 'true'
         uses: actions/setup-java@v6
         with:
           distribution: temurin
-          java-version: "17"
+          java-version: "21"
 
       - name: Set up Android SDK tools
         if: steps.resolve.outputs.patch_needed == 'true'
@@ -106,55 +106,10 @@ jobs:
           packages: platform-tools
           log-accepted-android-sdk-licenses: false
 
-      - name: Checkout exact XAutoDaily source and submodules
-        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
-        uses: actions/checkout@v7
-        with:
-          repository: LuckyPray/XAutoDaily
-          ref: ${{ steps.resolve.outputs.xad_sha }}
-          path: upstream-xautodaily
-          submodules: recursive
-          fetch-depth: 1
-          persist-credentials: false
-
-      - name: Install XAutoDaily build dependencies
-        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
-        run: |
-          sdkmanager --install "platforms;android-32" "platforms;android-33" "build-tools;33.0.1" "ndk;27.0.12077973" "cmake;3.22.1"
-
-      - name: Build latest XAutoDaily source as Debug
-        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
-        working-directory: upstream-xautodaily
-        run: |
-          chmod +x gradlew
-          ./gradlew --no-daemon :app:assembleDebug --stacktrace
-
-      - name: Collect XAutoDaily CI APK
-        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
-        run: |
-          mkdir -p modules
-          cp upstream-xautodaily/app/build/outputs/apk/debug/app-debug.apk modules/XAutoDaily.apk
-
-      - name: Keep XAutoDaily CI build
-        if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'
-        uses: actions/upload-artifact@v7
-        with:
-          name: xautodaily-ci-${{ steps.resolve.outputs.xad_sha }}
-          path: modules/XAutoDaily.apk
-          if-no-files-found: error
-          retention-days: 14
-
       - name: Verify APK packages and write module manifest
         if: steps.resolve.outputs.patch_needed == 'true'
         id: modules
         run: python3 .github/scripts/ci_modules.py finalize
-
-      - name: Set up JDK 21 for LSPatch
-        if: steps.resolve.outputs.patch_needed == 'true'
-        uses: actions/setup-java@v6
-        with:
-          distribution: temurin
-          java-version: "21"
 
       - name: Patch QQ with the verified module list
         if: steps.resolve.outputs.patch_needed == 'true'
