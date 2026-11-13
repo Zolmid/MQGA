@@ -48,8 +48,10 @@ concurrency:
 jobs:
   build:
     name: Resolve, build and verify six modules
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
+    env:
+      PYTHONUNBUFFERED: "1"
     steps:
       - name: Checkout MQGA
         uses: actions/checkout@v7
@@ -100,6 +102,9 @@ jobs:
       - name: Set up Android SDK tools
         if: steps.resolve.outputs.patch_needed == 'true'
         uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
 
       - name: Checkout exact XAutoDaily source and submodules
         if: steps.resolve.outputs.patch_needed == 'true' && steps.resolve.outputs.xad_enabled == 'true'

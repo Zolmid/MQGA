@@ -50,7 +50,7 @@ MODULES = {
     "ImPad": {
         "repo": "NKU100/ImPad", "package": "io.github.nku100.impad",
         "workflow": "build.yml", "artifact": "impad-module-apk",
-        "apk_pattern": "impad-*.apk",
+        "apk_pattern": "impad-*-release.apk",
     },
 }
 UPAGE_URL = "https://upage.html5.qq.com/wechat-apkinfo"
@@ -417,6 +417,8 @@ def extract_apk(archive_path, pattern, destination, source=None):
                 if len(metadata) != 1:
                     raise BuildError("ImPad artifact must contain exactly one build.json")
                 build = json.loads(archive.read(metadata[0]))
+                if build.get("buildType") != "release":
+                    raise BuildError("ImPad build.json must describe a release build")
                 if build.get("commit") != source["sha"]:
                     raise BuildError("ImPad build.json commit does not match the locked CI commit")
                 if build.get("sha256", {}).get(path.name) != hashlib.sha256(data).hexdigest():
@@ -535,7 +537,8 @@ def finalize(args):
     notes.append(f"- LSPatch: {source_description(sources['lspatch'])}")
     notes.extend(["", f"All {len(modules)} selected module APKs are checked for their package IDs, and their bytes "
                   "are verified inside every patched APK. `modules.json` records the pinned sources and SHA-256 values.",
-                  "", "Module features are not pre-enabled. Bundling and integrity verification do not establish "
+                  "", "Upstream module defaults are preserved; no custom feature preset is applied. ImPad "
+                  "has no internal switch and attempts tablet behavior when loaded. Bundling and integrity verification do not establish "
                   "runtime compatibility or guarantee tablet login / simultaneous sessions.", ""])
     Path(args.notes).write_text("\n".join(notes), encoding="utf-8")
     output(module_list=",".join(m["path"] for m in modules), module_count=len(modules))
