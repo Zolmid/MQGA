@@ -5,7 +5,16 @@ inputs/
 dist/
 upstream-xautodaily/
 LSPatch.jar
+LSPatch-preset.jar
 sources.json
 versions.json
 modules.json
 release-notes.md
+variants.json
+preset-effective.json
+preset-loader.json
+SHA256SUMS
+.preset-build/
+preset-build/
+preset-tools/
+variants-build.json

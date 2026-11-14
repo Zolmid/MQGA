@@ -285,6 +285,23 @@ def version_identity(sources, file_hashes):
     return identity
 
 
+def builder_file_hashes(root="."):
+    """Fingerprint both variant recipes, including additions/removals of Java files."""
+    root = Path(root)
+    required = [
+        Path("config.yml"), Path(".github/scripts/ci_modules.py"),
+        Path(".github/scripts/ci_presets.py"), Path("presets/default.json"),
+    ]
+    for relative in required:
+        if not (root / relative).is_file():
+            raise BuildError(f"Required build recipe file is missing: {relative}")
+    files = {root / relative for relative in required}
+    files.update((root / ".github/workflows").glob("*.y*ml"))
+    files.update((root / "preset-runtime").rglob("*.java"))
+    return {path.relative_to(root).as_posix(): sha256(path)
+            for path in sorted(files) if path.is_file()}
+
+
 def previous_versions():
     repo = os.environ.get("GITHUB_REPOSITORY", "")
     if not re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", repo):
@@ -333,10 +350,7 @@ def resolve(args):
         "lspatch": resolve_release(lspatch_repo, jar_pattern),
         "config": {"modules": selected, "lspatch_repo": lspatch_repo},
     }
-    files = [Path("config.yml"), Path(__file__).resolve()]
-    files.extend(sorted(Path(".github/workflows").glob("*.y*ml")))
-    file_hashes = {str(p.relative_to(Path.cwd()) if p.is_absolute() else p): sha256(p) for p in files}
-    versions = version_identity(sources, file_hashes)
+    versions = version_identity(sources, builder_file_hashes())
     # Read once even in force mode, so authorization/network errors are not hidden.
     previous = previous_versions()
     patch_needed = enabled("FORCE_ENABLE") or enabled("INPUT_FORCE") or previous != versions
@@ -523,7 +537,8 @@ def finalize(args):
     notes.append(f"- LSPatch: {source_description(sources['lspatch'])}")
     notes.extend(["", f"All {len(modules)} selected module APKs are checked for their package IDs, and their bytes "
                   "are verified inside every patched APK. `modules.json` records the pinned sources and SHA-256 values.",
-                  "", "Upstream module defaults are preserved; no custom feature preset is applied. ImPad "
+                  "", "The six upstream module APKs remain unchanged. The paired-variant verification adds "
+                  "the preset/blank loader identity and configuration policy below. ImPad "
                   "has no internal switch and attempts tablet behavior when loaded. Bundling and integrity verification do not establish "
                   "runtime compatibility or guarantee tablet login / simultaneous sessions.", ""])
     Path(args.notes).write_text("\n".join(notes), encoding="utf-8")
@@ -535,9 +550,9 @@ def verify_patched(dist, manifest):
     expected = {module["sha256"]: module["name"] for module in modules}
     if not modules or len(expected) != len(modules):
         raise BuildError("modules.json must contain selected modules with distinct SHA-256 values")
-    outputs = sorted(Path(dist).glob("*-lspatched.apk"))
+    outputs = sorted(Path(dist).glob("*.apk"))
     if not outputs:
-        raise BuildError(f"No *-lspatched.apk outputs found in {dist}")
+        raise BuildError(f"No *.apk outputs found in {dist}")
     for path in outputs:
         validate_apk(path, path.name)
         try:

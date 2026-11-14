@@ -12,7 +12,8 @@ modules:
   TSBattery: true # 默认分支成功 CI，legacy release
   ImPad: true # NKU100/ImPad 默认分支成功 CI，release APK
 
-# 保留模块上游默认设置；自定义功能预设待配置清单确认。
+# 每次发布同时产出空白版和预设版；已确认预设在 presets/default.json。
+# 预设只初始化全新配置域，空白版保留上游默认值与覆盖安装已有数据。
 # ImPad 没有内部开关，被加载后会自动尝试平板行为。
 QQ:
   custom:

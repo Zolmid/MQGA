@@ -1,0 +1,4143 @@
+{
+  "schema_version": 1,
+  "approved": true,
+  "approval": {
+    "confirmed_on": "2026-11-14",
+    "source_review": "mqga-preset-review-01",
+    "original_choice_sha256": "cc81501a1df600cf460e5e086f74a07de71a136963a83ec69cae14640f0c867a",
+    "approved_review_sha256": "3eaaaa360e1d90992f6830da624ef87aa850de52f790edd8975284d72fc4798f"
+  },
+  "host_package": "com.tencent.mobileqq",
+  "reviewed_qq_version": "9.3.85",
+  "automatic_seed_policy": "new_or_pristine_module_scope_only",
+  "module_apk_sha256": {
+    "QAuxiliary": "81414b607364f95582dedee64a9097e938fb090afd9af753a766f10dea0c95aa",
+    "QFun": "252dbcc75e5ea59abbb7a99258d0f4d2e6f56b945f6f121eabd126b2ff04a63c",
+    "QWish": "2e4ac70dc914461c403274cc55f03e957ffcfb0026e2aaf20481321b3a834eb6",
+    "XAutoDaily": "ba91ec13f71beba82fd518aa60339a11eb5265445ea611edb9d9676799b5f7d0",
+    "TSBattery": "e4b027e5b6ece6f79ed533612fffff11df5707ecd90e11877b6362d71f914c93",
+    "ImPad": "aead9c01eb79f69f38fddb2c9b1dc957a4ae07019beb352664a8fc31b2472ed2"
+  },
+  "lspatch_sha256": "d238fdc414d121b7fa454d8b4ccf420df3a8c97d563761861ff92bd9c5da2165",
+  "writes": [
+    {
+      "item_id": "QAuxiliary:cc.hicore.hook.UnlockLeftSlipLimit",
+      "module": "QAuxiliary",
+      "title": "允许各种消息左滑回复",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "UnlockLeftSlipLimit.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.hicore.hook.UploadTransparentAvatar",
+      "module": "QAuxiliary",
+      "title": "允许上传透明头像和表情",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "UploadTransparentAvatar.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.hicore.hook.stickerPanel.Hooker.StickerPanelEntryHooker",
+      "module": "QAuxiliary",
+      "title": "表情面板",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "StickerPanelEntryHooker.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.chat.CustomMsgTimeFormat",
+      "module": "QAuxiliary",
+      "title": "自定义聊天页面时间格式",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "rq_msg_time_enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.chat.DisableDropSticker",
+      "module": "QAuxiliary",
+      "title": "屏蔽掉落小表情",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "rq_disable_drop_sticker.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.chat.DisableEnterEffect",
+      "module": "QAuxiliary",
+      "title": "屏蔽所有进场特效",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "rq_disable_enter_effect.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.chat.DisablePokeEffect",
+      "module": "QAuxiliary",
+      "title": "屏蔽戳一戳动画",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "rq_disable_poke_effect.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.chat.EmoPicHook",
+      "module": "QAuxiliary",
+      "title": "以图片方式打开表情",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "EmoPicHook.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.chat.HideGiftAnim",
+      "module": "QAuxiliary",
+      "title": "隐藏送礼动画",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "HideGiftAnim.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.entertainment.PokeNoCoolDown",
+      "module": "QAuxiliary",
+      "title": "去除戳一戳时间限制",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "PokeNoCoolDown.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.experimental.ForcePadMode",
+      "module": "QAuxiliary",
+      "title": "强制平板模式",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ForcePadMode.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.experimental.QrLoginAuthSecCheckMitigation",
+      "module": "QAuxiliary",
+      "title": "跳过扫码风险登录五秒确认",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "QrLoginAuthSecCheckMitigation.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.friend.FriendDeletionNotification",
+      "module": "QAuxiliary",
+      "title": "被删好友通知 · 检测删除时通知",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/u_<uin>",
+        "key": "qn_notify_when_del",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.guild.GuildCopyCardMsg",
+      "module": "QAuxiliary",
+      "title": "频道复制卡片消息",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "GuildCopyCardMsg.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.guild.RevokeGuildMsg",
+      "module": "QAuxiliary",
+      "title": "频道防撤回消息",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RevokeGuildMsg.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.misc.BrowserRestrictMitigation",
+      "module": "QAuxiliary",
+      "title": "禁用内置浏览器网页拦截",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "BrowserRestrictMitigation.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.misc.DisableQQCrashReportManager",
+      "module": "QAuxiliary",
+      "title": "禁用崩溃日志上报",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableQQCrashReportManager.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.msg.CopyCardMsg",
+      "module": "QAuxiliary",
+      "title": "复制卡片消息",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "CopyCardMsg::BaseChatPie.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.msg.FlashPicHook",
+      "module": "QAuxiliary",
+      "title": "以图片方式打开闪照",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "FlashPicHook.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.msg.PttForwardHook",
+      "module": "QAuxiliary",
+      "title": "语音转发及保存",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "PttForwardHook.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.msg.RevokeMsgHook",
+      "module": "QAuxiliary",
+      "title": "防撤回",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RevokeMsgHook.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.msg.ShowMsgCount",
+      "module": "QAuxiliary",
+      "title": "显示具体消息数量",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ShowMsgCount.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.notification.AntiMessage",
+      "module": "QAuxiliary",
+      "title": "静默指定类型消息通知",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "qn_anti_message_items",
+        "type": "Set<String>",
+        "account_bound": false
+      },
+      "proposed_value": [],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.notification.MuteQZoneThumbsUp",
+      "module": "QAuxiliary",
+      "title": "被赞说说不提醒",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "MuteQZoneThumbsUp.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.profile.OneTapTwentyLikes",
+      "module": "QAuxiliary",
+      "title": "一键20赞",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "OneTapTwentyLikes.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.troop.DisableFlingToTroopGuild",
+      "module": "QAuxiliary",
+      "title": "禁用右滑切换群帖子",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableFlingToTroopGuild.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.troop.RemoveGroupApp",
+      "module": "QAuxiliary",
+      "title": "移除右划群应用",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "kr_remove_group_app.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.ui.chat.ReplyNoAtHook",
+      "module": "QAuxiliary",
+      "title": "禁止回复自动@",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ReplyNoAtHook.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.ui.title.RemoveDailySign",
+      "module": "QAuxiliary",
+      "title": "移除侧滑栏左上角打卡",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "kr_remove_daily_sign.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.microblock.hook.DumpTelegramStickers",
+      "module": "QAuxiliary",
+      "title": "使用 Telegram Stickers 表情包集",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DumpTelegramStickers.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.microblock.hook.ForceEnableMultiForward",
+      "module": "QAuxiliary",
+      "title": "转发时强制开启多选用户/群组",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ForceEnableMultiForward.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.microblock.hook.Pangu.SendPangu",
+      "module": "QAuxiliary",
+      "title": "发送消息自动 Pangu",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "sendMsgPangu.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.microblock.hook.RemoveDotOne",
+      "module": "QAuxiliary",
+      "title": "自动移除 apk 文件后的 .1",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveDotOne.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:com.alphi.qhmk.module.DisableX5",
+      "module": "QAuxiliary",
+      "title": "禁用浏览器X5内核",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableX5.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:com.xiaoniu.hook.DisableInteractivePop",
+      "module": "QAuxiliary",
+      "title": "禁用特定消息触发的交互式弹窗",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableInteractivePop.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:com.xiaoniu.hook.DisableProfileCardZplanCover",
+      "module": "QAuxiliary",
+      "title": "屏蔽好友资料卡超级QQ秀形象",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableProfileCardZplanCover.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:com.xiaoniu.hook.DisableReactionLimit",
+      "module": "QAuxiliary",
+      "title": "移除表情回应限制",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableReactionLimit.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:com.xiaoniu.hook.EmotionSharePanelDownload",
+      "module": "QAuxiliary",
+      "title": "表情分享菜单允许保存图片",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "EmotionSharePanelDownload.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:im.mingxi.BlockLinkInfo",
+      "module": "QAuxiliary",
+      "title": "屏蔽链接信息",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "BlockLinkInfo.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:io.github.horange321.SimplifyQQSettingMe2",
+      "module": "QAuxiliary",
+      "title": "新版侧滑栏精简",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "SimplifyQQSettingMe2",
+        "type": "Set<String>",
+        "account_bound": false
+      },
+      "proposed_value": [
+        "会员中心",
+        "个性装扮",
+        "免流量"
+      ],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:io.github.memory2314.hook.RemoveShareLimit",
+      "module": "QAuxiliary",
+      "title": "去除转发9名联系人限制",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveShareLimit.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:io.github.moonleeeaf.hook.FuckSvipVoiceToTextGreyTip",
+      "module": "QAuxiliary",
+      "title": "移除语音自动转文本灰字提示",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "FuckSvipVoiceToTextGreyTip.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:io.github.nakixii.hook.ForceShowTroopView",
+      "module": "QAuxiliary",
+      "title": "显示已退群用户的信息",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ForceShowTroopView.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:io.github.relimus.hook.HideQZoneAD",
+      "module": "QAuxiliary",
+      "title": "隐藏QQ空间广告",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "HideQZoneAD.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.ChangeGroupStatus",
+      "module": "QAuxiliary",
+      "title": "更改群聊状态",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ChangeGroupStatus.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.HandleQQSomeFunExit",
+      "module": "QAuxiliary",
+      "title": "拦截QQ部分功能闪退",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "HandleQQSomeFunExit.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.HideChatPanelBtn",
+      "module": "QAuxiliary",
+      "title": "屏蔽聊天面板按钮",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "hd_HideChatPanelBtn",
+        "type": "Set<String>",
+        "account_bound": false
+      },
+      "proposed_value": [
+        "滤镜视频",
+        "泡泡"
+      ],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.HideTipTextView",
+      "module": "QAuxiliary",
+      "title": "隐藏提示文本消息",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "hd_HideTipTextView",
+        "type": "Set<String>",
+        "account_bound": false
+      },
+      "proposed_value": [
+        "我也要打卡"
+      ],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.QuickReplayPaiYiPai",
+      "module": "QAuxiliary",
+      "title": "快捷回拍",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "QuickReplayPaiYiPai.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.auxiliary.chat.RemoveSelectedMedia",
+      "module": "QAuxiliary",
+      "title": "移除选择媒体限制",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveSelectedMedia.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.auxiliary.experimental.DisableFekitToAppDialog",
+      "module": "QAuxiliary",
+      "title": "屏蔽社交功能限制提醒",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableFekitToAppDialog.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.menu.EditTextContent",
+      "module": "QAuxiliary",
+      "title": "编辑重发文本消息",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "EditTextContent.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.menu.RecallMsgRecord",
+      "module": "QAuxiliary",
+      "title": "撤回特殊消息",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RecallMsgRecord.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.menu.RepeatToImg",
+      "module": "QAuxiliary",
+      "title": "复读消息为图片",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RepeatToImg.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.chat.goup.other.HideEditTroopNick",
+      "module": "QAuxiliary",
+      "title": "隐藏编辑群昵称装扮",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "HideEditTroopNick.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.chat.other.HideShortcutBar",
+      "module": "QAuxiliary",
+      "title": "隐藏聊天快捷栏",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "HideShortcutBar.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.main.ui.operation.log.ShowQzoneFrame",
+      "module": "QAuxiliary",
+      "title": "显示空间动态",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ShowQzoneFrame.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.main.ui.titile.DisableThirdContainer",
+      "module": "QAuxiliary",
+      "title": "屏蔽悬浮广告",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableThirdContainer.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.ui.chat.msg.DisableAiAvatar",
+      "module": "QAuxiliary",
+      "title": "禁用QQ秀功能",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "DisableAiAvatar.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.ui.chat.msg.HideEmoReplyLayout",
+      "module": "QAuxiliary",
+      "title": "隐藏表情表态",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "HideEmoReplyLayout.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.ui.chat.msg.RemoveEmoReplyMenu",
+      "module": "QAuxiliary",
+      "title": "移除消息表态",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveEmoReplyMenu.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.ui.chat.msg.RemoveReplyImagePreviewLimit",
+      "module": "QAuxiliary",
+      "title": "移除引用图片预览限制",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveReplyImagePreviewLimit.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.ui.misc.HideBottomTabTitle",
+      "module": "QAuxiliary",
+      "title": "隐藏底栏标题",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "HideBottomTabTitle.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.simplify.ui.misc.RemoveDialogWaitTime",
+      "module": "QAuxiliary",
+      "title": "移除弹窗等待时间",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveDialogWaitTime.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.ketal.hook.ChatItemShowQQUin",
+      "module": "QAuxiliary",
+      "title": "消息显示 ID 和时间",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ChatItemShowQQUin.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.ketal.hook.FakeMultiWindowStatus",
+      "module": "QAuxiliary",
+      "title": "伪装处于非多窗口模式",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "FakeMultiWindowStatus.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.ketal.hook.QZoneNoAD",
+      "module": "QAuxiliary",
+      "title": "隐藏空间好友热播和广告",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ketal_qzone_hook.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.ketal.hook.RemoveQRLoginAuth",
+      "module": "QAuxiliary",
+      "title": "去除相册扫码登录检验",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveQRLoginAuth.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.ketal.hook.ShowMsgAt",
+      "module": "QAuxiliary",
+      "title": "消息显示At对象",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ShowMsgAt.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.singleneuron.hook.GroupSpecialCare",
+      "module": "QAuxiliary",
+      "title": "关闭群普通消息特别关心提示",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "GroupSpecialCare.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.singleneuron.hook.SpecialCareNewChannel",
+      "module": "QAuxiliary",
+      "title": "特别关心通知单独分组",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "SpecialCareNewChannel.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.singleneuron.hook.SystemEmoji",
+      "module": "QAuxiliary",
+      "title": "强制使用系统Emoji",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "SystemEmoji.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.singleneuron.hook.decorator.FxxkQQBrowser",
+      "module": "QAuxiliary",
+      "title": "去你大爷的QQ浏览器",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "FxxkQQBrowser.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:moe.zapic.hook.MessagingStyleNotification",
+      "module": "QAuxiliary",
+      "title": "MessagingStyle通知",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "MessagingStyleNotification.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:top.linl.hook.OffRelationshipIdentification",
+      "module": "QAuxiliary",
+      "title": "精简陌生人资料卡你们的关系标识",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "OffRelationshipIdentification.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:top.linl.hook.SortTroopSettingAppListView",
+      "module": "QAuxiliary",
+      "title": "将群应用卡片(群文件)移动到正常位置",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "SortTroopSettingAppListView.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:xyz.nextalone.hook.RemoveShortCutBar",
+      "module": "QAuxiliary",
+      "title": "隐藏文本框上方快捷方式",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveShortCutBar.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:xyz.nextalone.hook.RemoveSuperQQShow",
+      "module": "QAuxiliary",
+      "title": "屏蔽消息界面标题栏超级QQ秀图标",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveSuperQQShow.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:xyz.nextalone.hook.SimplifyEmoPanel",
+      "module": "QAuxiliary",
+      "title": "精简表情菜单",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "na_simplify_emo_panel",
+        "type": "Set<String>",
+        "account_bound": false
+      },
+      "proposed_value": [
+        "虚拟形象/QQ秀互动表情",
+        "AI表情",
+        "超级QQ秀表情",
+        "厘米秀"
+      ],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AllowViewBlockedTroop",
+      "module": "QFun",
+      "title": "查看被封禁群聊",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "AllowViewBlockedTroop",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoGrabHb",
+      "module": "QFun",
+      "title": "自动领取红包",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "AutoGrabHb",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoRemarkApk",
+      "module": "QFun",
+      "title": "上传apk重命名",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "AutoRemarkApk",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:BlockAIOEffects",
+      "module": "QFun",
+      "title": "屏蔽AIO动画特效",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "BlockAIOEffects",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:CustomDevice",
+      "module": "QFun",
+      "title": "伪装设备在线状态",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "CustomDevice",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:ManualGrabHb",
+      "module": "QFun",
+      "title": "手动打开红包",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "ManualGrabHb",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:MixedEmoAndText",
+      "module": "QFun",
+      "title": "发送文字表情复合消息",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "MixedEmoAndText",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:ModifyMsgContent",
+      "module": "QFun",
+      "title": "修改本地消息文本",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "ModifyMsgContent",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:MultiOnlineNudge",
+      "module": "QFun",
+      "title": "在线好友连拍",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "MultiOnlineNudge",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:MultiPaiYiPai",
+      "module": "QFun",
+      "title": "拍一拍连拍",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "MultiPaiYiPai",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:MultiRecall",
+      "module": "QFun",
+      "title": "多选撤回",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "MultiRecall",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:SortEmoticonsByUsage",
+      "module": "QFun",
+      "title": "收藏表情按使用排序",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "SortEmoticonsByUsage",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:SortingAtList",
+      "module": "QFun",
+      "title": "艾特列表排序",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "SortingAtList",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C0837",
+      "module": "QWish",
+      "title": "动态自动点赞",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "QQ空间/动态自动点赞",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "QQ空间/动态自动点赞",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C0847",
+      "module": "QWish",
+      "title": "自动点赞空间动态",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "QQ空间/自动点赞空间动态",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "QQ空间/自动点赞空间动态",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C0851",
+      "module": "QWish",
+      "title": "隐藏空间广告",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "QQ空间/隐藏空间广告",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "QQ空间/隐藏空间广告",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C0891",
+      "module": "QWish",
+      "title": "显示已退群成员消息",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "群聊/显示已退群成员消息",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "群聊/显示已退群成员消息",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C0899",
+      "module": "QWish",
+      "title": "隐藏群待办通知",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "消息通知/隐藏群待办通知",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "消息通知/隐藏群待办通知",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1012",
+      "module": "QWish",
+      "title": "伪装应用权限已授予",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/伪装应用权限已授予",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/伪装应用权限已授予",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1015",
+      "module": "QWish",
+      "title": "显示群文件下载次数（新版）",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "群聊/显示群文件下载次数（新版）",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "群聊/显示群文件下载次数（新版）",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1018",
+      "module": "QWish",
+      "title": "解除收藏预览限制",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/解除收藏预览限制",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/解除收藏预览限制",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1028",
+      "module": "QWish",
+      "title": "自定义图片与表情显示文本",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "图片与表情/自定义图片与表情显示文本",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "图片与表情/自定义图片与表情显示文本",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1030",
+      "module": "QWish",
+      "title": "文件下载重定向",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "聊天/文件下载重定向",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "聊天/文件下载重定向",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1031",
+      "module": "QWish",
+      "title": "隐藏QQ主页顶部广告",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "主页/隐藏QQ主页顶部广告",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "主页/隐藏QQ主页顶部广告",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1032",
+      "module": "QWish",
+      "title": "强制使用默认聊天气泡",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "净化/强制使用默认聊天气泡",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "净化/强制使用默认聊天气泡",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1037",
+      "module": "QWish",
+      "title": "屏蔽干扰弹窗",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "净化/屏蔽干扰弹窗",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "净化/屏蔽干扰弹窗",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1042",
+      "module": "QWish",
+      "title": "允许查看异常状态资料卡",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "资料卡/允许查看异常状态资料卡",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "资料卡/允许查看异常状态资料卡",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1046",
+      "module": "QWish",
+      "title": "分享图片时不压缩",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "图片与表情/分享图片时不压缩",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "图片与表情/分享图片时不压缩",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1054",
+      "module": "QWish",
+      "title": "隐藏好友资料卡送礼入口",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "资料卡/隐藏好友资料卡送礼入口",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "资料卡/隐藏好友资料卡送礼入口",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1058",
+      "module": "QWish",
+      "title": "禁用下拉小程序",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "净化/禁用下拉小程序",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "净化/禁用下拉小程序",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1067",
+      "module": "QWish",
+      "title": "禁用QQ上报日志",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/禁用QQ上报日志",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/禁用QQ上报日志",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1089",
+      "module": "QWish",
+      "title": "篡改发送图片比例",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "图片与表情/篡改发送图片比例",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "图片与表情/篡改发送图片比例",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1092",
+      "module": "QWish",
+      "title": "自定义输入框提示",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "聊天/自定义输入框提示",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "聊天/自定义输入框提示",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1100",
+      "module": "QWish",
+      "title": "自定义随机表情",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "聊天/自定义随机表情",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "聊天/自定义随机表情",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1105",
+      "module": "QWish",
+      "title": "下载表情（新版）",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "图片与表情/下载表情（新版）",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "图片与表情/下载表情（新版）",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1111",
+      "module": "QWish",
+      "title": "聊天时自动选择原图",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "图片与表情/聊天时自动选择原图",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "图片与表情/聊天时自动选择原图",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1124",
+      "module": "QWish",
+      "title": "复读消息",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "聊天/复读消息",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "聊天/复读消息",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1126",
+      "module": "QWish",
+      "title": "精确显示禁言时间",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "聊天/精确显示禁言时间",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "聊天/精确显示禁言时间",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1333",
+      "module": "QWish",
+      "title": "液态玻璃底部导航栏",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/液态玻璃底部导航栏",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/液态玻璃底部导航栏",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1349",
+      "module": "QWish",
+      "title": "防止子线程崩溃",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/防止子线程崩溃",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/防止子线程崩溃",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1842",
+      "module": "QWish",
+      "title": "发送消息卡片",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "聊天/发送消息卡片",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "聊天/发送消息卡片",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1846",
+      "module": "QWish",
+      "title": "隐藏主页新年横幅广告",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "主页/隐藏主页新年横幅广告",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "主页/隐藏主页新年横幅广告",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1847",
+      "module": "QWish",
+      "title": "查看图片时使用透明模糊背景",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "图片与表情/查看图片时使用透明模糊背景",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "图片与表情/查看图片时使用透明模糊背景",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1848",
+      "module": "QWish",
+      "title": "禁用日志写入线程",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/禁用日志写入线程",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/禁用日志写入线程",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1849",
+      "module": "QWish",
+      "title": "屏蔽@全体成员系统通知",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "消息通知/屏蔽@全体成员系统通知",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "消息通知/屏蔽@全体成员系统通知",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1853",
+      "module": "QWish",
+      "title": "查看表情时使用透明背景",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "图片与表情/查看表情时使用透明背景",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "图片与表情/查看表情时使用透明背景",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:QQ运动步数",
+      "module": "XAutoDaily",
+      "title": "QQ运动步数",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "QQ运动步数#enable",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:好友点赞",
+      "module": "XAutoDaily",
+      "title": "好友点赞",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "好友点赞#enable",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:群打卡",
+      "module": "XAutoDaily",
+      "title": "群打卡",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "群打卡#enable",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:资料卡回赞",
+      "module": "XAutoDaily",
+      "title": "资料卡回赞",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "资料卡回赞#enable",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.singleneuron.hook.JustPush",
+      "module": "QAuxiliary",
+      "title": "Just Push",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "JustPush.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "TSBattery:TS-01",
+      "module": "TSBattery",
+      "title": "停用省电策略",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/tsbattery_config.xml",
+        "key": "disable_all_hook",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "TSBattery:TS-02",
+      "module": "TSBattery",
+      "title": "启用保守模式",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/tsbattery_config.xml",
+        "key": "enable_qq_tim_protect_mode",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "TSBattery:TS-03",
+      "module": "TSBattery",
+      "title": "关闭 CoreService",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/tsbattery_config.xml",
+        "key": "enable_kill_qq_tim_core_service",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "TSBattery:TS-04",
+      "module": "TSBattery",
+      "title": "关闭 CoreService$KernelService",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/tsbattery_config.xml",
+        "key": "enable_kill_qq_tim_core_service_child",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C0829",
+      "module": "QWish",
+      "title": "QQ后台保活",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/QQ后台保活",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/QQ后台保活",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:群组续火",
+      "module": "XAutoDaily",
+      "title": "群组续火",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "群组续火#enable",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:好友续火花",
+      "module": "XAutoDaily",
+      "title": "好友续火花",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "好友续火花#enable",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoKeepSpark",
+      "module": "QFun",
+      "title": "自动续火",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "AutoKeepSpark",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.misc.DisableHotPatch",
+      "module": "QAuxiliary",
+      "title": "禁用 QQ 热补丁（宿主名动态）",
+      "storage": {
+        "adapter": "host_file_marker",
+        "path": "<host filesDir>/qn_disable_hot_patch",
+        "key": "<host filesDir>/qn_disable_hot_patch",
+        "type": "file_marker",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      },
+      "marker_operation": "leave_absent_in_new_profile"
+    },
+    {
+      "item_id": "QFun:DisableHotPatch",
+      "module": "QFun",
+      "title": "屏蔽热更新",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "DisableHotPatch",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1040",
+      "module": "QWish",
+      "title": "禁用QQ热补丁-热更新(云控)",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/禁用QQ热补丁-热更新(云控)",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/禁用QQ热补丁-热更新(云控)",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.ui.profile.RemoveDiyCard",
+      "module": "QAuxiliary",
+      "title": "屏蔽 DIY 名片",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "kr_remove_diy_card.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:RemoveDIYCard",
+      "module": "QFun",
+      "title": "屏蔽DIY名片",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "RemoveDIYCard",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1080",
+      "module": "QWish",
+      "title": "隐藏 DIY 名片",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "资料卡/隐藏 DIY 名片",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "资料卡/隐藏 DIY 名片",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.FakeLocation",
+      "module": "QAuxiliary",
+      "title": "虚拟共享位置",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "hd_FakeLocation.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1077",
+      "module": "QWish",
+      "title": "发送随机虚拟位置",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/发送随机虚拟位置",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/发送随机虚拟位置",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:me.hd.hook.auxiliary.message.RemoveAudioPlayerDialog",
+      "module": "QAuxiliary",
+      "title": "移除语音播放弹窗",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RemoveAudioPlayerDialog.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1078",
+      "module": "QWish",
+      "title": "关闭语音播放弹窗",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "净化/关闭语音播放弹窗",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "净化/关闭语音播放弹窗",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1088",
+      "module": "QWish",
+      "title": "上传文件时重命名",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "聊天/上传文件时重命名",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "聊天/上传文件时重命名",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1319",
+      "module": "QWish",
+      "title": "雪花飘落效果",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "季节专属/雪花飘落效果",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "季节专属/雪花飘落效果",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.experimental.ForcePhoneMode",
+      "module": "QAuxiliary",
+      "title": "强制手机模式",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ForcePhoneMode.enabled",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:TabletMode",
+      "module": "QFun",
+      "title": "平板模式",
+      "storage": {
+        "adapter": "shared_preferences",
+        "path": "<host dataDir>/shared_prefs/QFun_Config_<runtime UIN>.xml",
+        "key": "TabletMode",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1039",
+      "module": "QWish",
+      "title": "启用平板模式",
+      "storage": {
+        "adapter": "qwish_feature_map",
+        "path": "<host external data>/QWish/data/xphelper/hook_item_config",
+        "format": "FastKV string containing a JSON map",
+        "physical_key": "items",
+        "key": "实验功能/启用平板模式",
+        "type": "Boolean",
+        "account_bound": false,
+        "entry_fields": {
+          "itemPath": "实验功能/启用平板模式",
+          "bypassDefaultLoad": true
+        },
+        "eligibility": "unchanged; default override does not bypass native eligibility"
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:18",
+      "module": "QAuxiliary",
+      "title": "自定义消息时间格式 · 格式",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "rq_msg_time_format",
+        "type": "String",
+        "account_bound": false
+      },
+      "proposed_value": "yyyy-MM-dd HH:mm:ss",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:29",
+      "module": "QAuxiliary",
+      "title": "防撤回 · RevokeMsgHook.KEY_SHOW_SHMSGSEQ",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "RevokeMsgHook.KEY_SHOW_SHMSGSEQ",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:104",
+      "module": "QAuxiliary",
+      "title": "消息显示 ID 和时间 · 消息格式",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ChatItemShowQQUin.CFG_KEY_CUSTOM_MSG_FORMAT",
+        "type": "String",
+        "account_bound": false
+      },
+      "proposed_value": "${shmsgseq}   ${formatTime}",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:105",
+      "module": "QAuxiliary",
+      "title": "消息显示 ID 和时间 · 时间格式",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ChatItemShowQQUin.CFG_KEY_CUSTOM_TIME_FORMAT",
+        "type": "String",
+        "account_bound": false
+      },
+      "proposed_value": "yyyy-MM-dd HH:mm:ss",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:106",
+      "module": "QAuxiliary",
+      "title": "消息显示 ID 和时间 · ChatItemShowQQUin.CFG_KEY_ENABLE_DETAIL_INFO",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ChatItemShowQQUin.CFG_KEY_ENABLE_DETAIL_INFO",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:107",
+      "module": "QAuxiliary",
+      "title": "消息显示 ID 和时间 · ChatItemShowQQUin.CFG_KEY_ENABLE_GRAY_BG",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "ChatItemShowQQUin.CFG_KEY_ENABLE_GRAY_BG",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:120",
+      "module": "QAuxiliary",
+      "title": "MessagingStyle通知 · MessagingStyleNotification.disableConversationSubChannel",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "MessagingStyleNotification.disableConversationSubChannel",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:121",
+      "module": "QAuxiliary",
+      "title": "MessagingStyle通知 · MessagingStyleNotification.disableBubble",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "MessagingStyleNotification.disableBubble",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:47",
+      "module": "QAuxiliary",
+      "title": "Telegram Stickers · 移除 QQ 表情包",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "dumpTGStickers.removeQQEmoticons",
+        "type": "String",
+        "account_bound": false
+      },
+      "proposed_value": "false",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:48",
+      "module": "QAuxiliary",
+      "title": "Telegram Stickers · 移除 QQ 杂项",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "dumpTGStickers.removeQQMisc",
+        "type": "String",
+        "account_bound": false
+      },
+      "proposed_value": "false",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:46",
+      "module": "QAuxiliary",
+      "title": "Telegram Stickers · 表情包列数",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "dumpTGStickers.panelColumns",
+        "type": "String",
+        "account_bound": false
+      },
+      "proposed_value": "4",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QAuxiliary:param:49",
+      "module": "QAuxiliary",
+      "title": "Telegram Stickers · 预览质量",
+      "storage": {
+        "adapter": "qa_config_manager",
+        "format": "MMKV with $shadow$type metadata",
+        "path": "<host filesDir>/qa_mmkv/global_config",
+        "key": "dumpTGStickers.previewQuality",
+        "type": "String",
+        "account_bound": false
+      },
+      "proposed_value": "300",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoGrabHb:param:0",
+      "module": "QFun",
+      "title": "自动领取红包 · 领取延迟（毫秒）",
+      "storage": {
+        "adapter": "json_object",
+        "path": "<external-files-parent>/QFun/<runtime UIN>/data/AutoGrabHb",
+        "key": "delay",
+        "type": "Long",
+        "account_bound": true
+      },
+      "proposed_value": 1000,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoGrabHb:param:1",
+      "module": "QFun",
+      "title": "自动领取红包 · 最低平均金额（分）",
+      "storage": {
+        "adapter": "json_object",
+        "path": "<external-files-parent>/QFun/<runtime UIN>/data/AutoGrabHb",
+        "key": "minAverage",
+        "type": "Int",
+        "account_bound": true
+      },
+      "proposed_value": 0,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoGrabHb:param:2",
+      "module": "QFun",
+      "title": "自动领取红包 · 过滤关键词",
+      "storage": {
+        "adapter": "json_object",
+        "path": "<external-files-parent>/QFun/<runtime UIN>/data/AutoGrabHb",
+        "key": "keywords",
+        "type": "Set<String>",
+        "account_bound": true
+      },
+      "proposed_value": [],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoGrabHb:param:3",
+      "module": "QFun",
+      "title": "自动领取红包 · 随机回复语",
+      "storage": {
+        "adapter": "json_object",
+        "path": "<external-files-parent>/QFun/<runtime UIN>/data/AutoGrabHb",
+        "key": "autoReply",
+        "type": "List<String>",
+        "account_bound": true
+      },
+      "proposed_value": [],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoGrabHb:param:4",
+      "module": "QFun",
+      "title": "自动领取红包 · 不自动领取的群列表",
+      "storage": {
+        "adapter": "json_object",
+        "path": "<external-files-parent>/QFun/<runtime UIN>/data/AutoGrabHb",
+        "key": "whiteList",
+        "type": "Set<String>",
+        "account_bound": true
+      },
+      "proposed_value": [],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QFun:AutoGrabHb:param:5",
+      "module": "QFun",
+      "title": "自动领取红包 · 自动领取的红包种类",
+      "storage": {
+        "adapter": "json_object",
+        "path": "<external-files-parent>/QFun/<runtime UIN>/data/AutoGrabHb",
+        "key": "targetTypes",
+        "type": "Set<Int>",
+        "account_bound": true
+      },
+      "proposed_value": [
+        1
+      ],
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1124:param:0",
+      "module": "QWish",
+      "title": "复读消息 · 复读图标大小",
+      "storage": {
+        "adapter": "qwish_parameter",
+        "upstream_storage": {
+          "kind": "FastKV-delegate",
+          "store": "Repetition",
+          "path": "<external-storage>/Android/data/<host-package>/QWish/config"
+        },
+        "key": "size",
+        "type": "Int",
+        "account_bound": false
+      },
+      "proposed_value": 26,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1124:param:1",
+      "module": "QWish",
+      "title": "复读消息 · 图标横向偏移",
+      "storage": {
+        "adapter": "qwish_parameter",
+        "upstream_storage": {
+          "kind": "FastKV-delegate",
+          "store": "Repetition",
+          "path": "<external-storage>/Android/data/<host-package>/QWish/config"
+        },
+        "key": "offsetX",
+        "type": "Float",
+        "account_bound": false
+      },
+      "proposed_value": 0.0,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1124:param:2",
+      "module": "QWish",
+      "title": "复读消息 · 图标纵向偏移",
+      "storage": {
+        "adapter": "qwish_parameter",
+        "upstream_storage": {
+          "kind": "FastKV-delegate",
+          "store": "Repetition",
+          "path": "<external-storage>/Android/data/<host-package>/QWish/config"
+        },
+        "key": "offsetY",
+        "type": "Float",
+        "account_bound": false
+      },
+      "proposed_value": 0.0,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1124:param:3",
+      "module": "QWish",
+      "title": "复读消息 · 双击复读",
+      "storage": {
+        "adapter": "qwish_parameter",
+        "upstream_storage": {
+          "kind": "FastKV-delegate",
+          "store": "Repetition",
+          "path": "<external-storage>/Android/data/<host-package>/QWish/config"
+        },
+        "key": "doubleClick",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1124:param:4",
+      "module": "QWish",
+      "title": "复读消息 · 复读图标位置",
+      "storage": {
+        "adapter": "qwish_parameter",
+        "upstream_storage": {
+          "kind": "FastKV-delegate",
+          "store": "Repetition",
+          "path": "<external-storage>/Android/data/<host-package>/QWish/config"
+        },
+        "key": "position",
+        "type": "String",
+        "account_bound": false
+      },
+      "proposed_value": "CENTER",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "QWish:C1333:param:0",
+      "module": "QWish",
+      "title": "液态玻璃底部导航栏 · 底栏平滑切换页面",
+      "storage": {
+        "adapter": "qwish_parameter",
+        "upstream_storage": {
+          "kind": "JSON",
+          "store": "LiquidGlassTabBar",
+          "path": "<external-storage>/Android/data/<host-package>/QWish/data/simple"
+        },
+        "key": "smoothPageSwitch",
+        "type": "Boolean",
+        "account_bound": false
+      },
+      "proposed_value": false,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:群打卡:var:hour",
+      "module": "XAutoDaily",
+      "title": "群打卡 · 自定义打卡时间-小时",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "群打卡#env_variable#hour",
+        "type": "String",
+        "account_bound": true
+      },
+      "proposed_value": "0",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:群打卡:var:minute",
+      "module": "XAutoDaily",
+      "title": "群打卡 · 自定义打卡时间-分钟（任务一般是10分钟的倍数执行，无法精确到具体的分钟）",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "群打卡#env_variable#minute",
+        "type": "String",
+        "account_bound": true
+      },
+      "proposed_value": "0",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:资料卡回赞:var:maxPage",
+      "module": "XAutoDaily",
+      "title": "资料卡回赞 · 最大获取点赞列表页数，每页30人，默认为4的情况，即使昨天点赞的人超过120人也不会再获取第5页的人，避免任务执行时间过长(虽然貌似只能获取100个)",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "资料卡回赞#env_variable#maxPage",
+        "type": "String",
+        "account_bound": true
+      },
+      "proposed_value": "4",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:task:资料卡回赞:var:maxDays",
+      "module": "XAutoDaily",
+      "title": "资料卡回赞 · 回赞前n天内点赞的人，默认值为2",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "资料卡回赞#env_variable#maxDays",
+        "type": "String",
+        "account_bound": true
+      },
+      "proposed_value": "2",
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      }
+    },
+    {
+      "item_id": "XAutoDaily:XAD-01",
+      "module": "XAutoDaily",
+      "title": "签到总开关",
+      "storage": {
+        "adapter": "xad_confproxy_mmkv",
+        "path": "<host filesDir>/xa_mmkv/XASettings-<runtime UIN>",
+        "key": "global_enable",
+        "type": "Boolean",
+        "account_bound": true
+      },
+      "proposed_value": true,
+      "automatic_seed_policy": {
+        "requires_user_approved_profile": true,
+        "requires_new_or_pristine_module_configuration_scope": true,
+        "requires_target_key_absent": true,
+        "preserve_existing_configuration_scope": true,
+        "missing_key_alone_is_not_sufficient": true
+      },
+      "activation_preconditions": [
+        "valid local runtime account",
+        "new/pristine XAD account configuration scope, with no pre-existing task choices or parameters",
+        "complete required parameters and only the reviewed task switches seeded successfully",
+        "account bootstrap has not exposed the scheduler before the ordered write completes"
+      ]
+    }
+  ],
+  "deferred": [
+    {
+      "item_id": "QAuxiliary:cc.ioctl.hook.notification.AntiMessage",
+      "title": "静默指定类型消息通知",
+      "reason": "未选通知类型，先空集合；保留专门的空间点赞提醒静音。"
+    },
+    {
+      "item_id": "QAuxiliary:cc.microblock.hook.DumpTelegramStickers",
+      "title": "使用 Telegram Stickers 表情包集",
+      "reason": "没有本机 TG 表情素材证据；主开关暂缓，保留独立本地表情面板，相关参数先按保守值准备。"
+    },
+    {
+      "item_id": "QFun:CustomDevice",
+      "title": "伪装设备在线状态",
+      "reason": "缺 fakeModel；空值会实际返回空机型，不能代替保持原值。"
+    },
+    {
+      "item_id": "QWish:C1028",
+      "title": "自定义图片与表情显示文本",
+      "reason": "缺自定义图片/表情外显文案；空默认不修改外显。"
+    },
+    {
+      "item_id": "QWish:C1089",
+      "title": "篡改发送图片比例",
+      "reason": "缺尺寸档位；默认 0 实际不改图片元数据。"
+    },
+    {
+      "item_id": "QWish:C1092",
+      "title": "自定义输入框提示",
+      "reason": "缺输入框提示文案；不擅自采用 Hello World.。"
+    },
+    {
+      "item_id": "XAutoDaily:task:QQ运动步数",
+      "title": "QQ运动步数",
+      "reason": "缺 steps；不擅自编造步数。"
+    },
+    {
+      "item_id": "XAutoDaily:task:好友点赞",
+      "title": "好友点赞",
+      "reason": "缺好友列表；不启用会因空必填参数抛错的任务。"
+    },
+    {
+      "item_id": "XAutoDaily:task:群打卡",
+      "title": "群打卡",
+      "reason": "缺群列表；不启用会因空必填参数抛错的任务。"
+    }
+  ],
+  "blank_variant": "Original LSPatch loader and upstream module defaults; no preset runtime; existing configuration preserved.",
+  "profile_id": "35cd324be34b7e4dcced5f708a6f46326035f2f6d192822593c11a2c9e9cf2ba"
+}

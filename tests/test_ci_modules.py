@@ -71,7 +71,7 @@ class ModuleInputsTests(unittest.TestCase):
             ci.choose_artifact(run(5), [artifact(1, 5), artifact(2, 5)],
                                ci.MODULES["QAuxiliary"]["artifact"])
 
-    def test_exact_qa_and_legacy_ts_flavors(self):
+    def test_exact_qa_legacy_ts_and_impad_release_flavors(self):
         sha = "a" * 40
         qa = [artifact(1, 5, f"QAuxiliary-release-{sha}-universal"),
               artifact(2, 5, f"QAuxiliary-release-{sha}-arm64-symbol"), artifact(3, 5)]
@@ -87,6 +87,20 @@ class ModuleInputsTests(unittest.TestCase):
                 archive.writestr("QAuxv-v1.6.1-universal.apk", apk(b"other"))
             ci.extract_apk(archive_path, ci.MODULES["QAuxiliary"]["apk_pattern"], destination)
             self.assertEqual(destination.read_bytes(), apk())
+            impad_source = {"repo": "NKU100/ImPad", "sha": sha}
+            impad_name = "impad-1.1.3-release.apk"
+            build = {"commit": sha, "buildType": "release",
+                     "sha256": {impad_name: hashlib.sha256(apk()).hexdigest()}}
+            with zipfile.ZipFile(archive_path, "w") as archive:
+                archive.writestr(impad_name, apk())
+                archive.writestr("build.json", json.dumps(build))
+                archive.writestr("impad-1.1.3-source.tar.gz", b"source archive")
+            ci.extract_apk(archive_path, ci.MODULES["ImPad"]["apk_pattern"], destination, impad_source)
+            self.assertEqual(destination.read_bytes(), apk())
+            with zipfile.ZipFile(archive_path, "w") as archive:
+                archive.writestr("impad-1.1.3-debug.apk", apk())
+            with self.assertRaisesRegex(ci.BuildError, "exactly one"):
+                ci.extract_apk(archive_path, ci.MODULES["ImPad"]["apk_pattern"], destination, impad_source)
 
     def test_missing_multiple_empty_or_unsafe_apk_fails(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -129,6 +143,72 @@ class ModuleInputsTests(unittest.TestCase):
                 else:
                     with self.assertRaisesRegex(ci.BuildError, "embedded module bytes differ"):
                         ci.verify_patched(root, manifest)
+
+    def test_named_preset_and_blank_variants_are_both_checked(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            module = apk(b"original-upstream-module")
+            manifest = root / "modules.json"
+            manifest.write_text(json.dumps({"modules": [
+                {"name": "module", "sha256": hashlib.sha256(module).hexdigest()},
+            ]}))
+
+            def write_variant(name, embedded):
+                with zipfile.ZipFile(root / name, "w") as archive:
+                    archive.writestr("AndroidManifest.xml", b"manifest")
+                    archive.writestr("classes.dex", b"wrapper")
+                    archive.writestr("assets/lspatch/modules/module.apk", embedded)
+
+            write_variant("QQ-9.3.85-42-blank.apk", module)
+            write_variant("QQ-9.3.85-42-preset.apk", module)
+            ci.verify_patched(root, manifest)
+            write_variant("QQ-9.3.85-42-preset.apk", apk(b"modified-module"))
+            with self.assertRaisesRegex(ci.BuildError, "preset.apk: embedded module bytes differ"):
+                ci.verify_patched(root, manifest)
+
+    def test_no_apk_outputs_fails_instead_of_skipping_verification(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = root / "modules.json"
+            manifest.write_text(json.dumps({"modules": [{"name": "module", "sha256": "a" * 64}]}))
+            with self.assertRaisesRegex(ci.BuildError, r"No \*\.apk outputs"):
+                ci.verify_patched(root, manifest)
+
+    def test_preset_recipe_changes_participate_in_update_identity(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            files = {
+                "config.yml": "modules: {}\n",
+                ".github/scripts/ci_modules.py": "# resolver\n",
+                ".github/scripts/ci_presets.py": "# paired builder\n",
+                ".github/workflows/main.yml": "name: Release\n",
+                "presets/default.json": '{"approved":true}\n',
+                "preset-runtime/src/io/github/mqga/preset/Bootstrap.java": "class Bootstrap {}\n",
+                "preset-runtime/stubs/example/Bridge.java": "class Bridge {}\n",
+            }
+            for name, content in files.items():
+                target = root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(content)
+            sources = {"modules": {}, "qq": []}
+            original = ci.version_identity(sources, ci.builder_file_hashes(root))
+            for name in (
+                "presets/default.json", ".github/scripts/ci_presets.py",
+                "preset-runtime/src/io/github/mqga/preset/Bootstrap.java",
+                "preset-runtime/stubs/example/Bridge.java",
+            ):
+                with self.subTest(changed=name):
+                    (root / name).write_text(files[name] + "changed\n")
+                    self.assertNotEqual(original, ci.version_identity(sources, ci.builder_file_hashes(root)))
+                    (root / name).write_text(files[name])
+            added = root / "preset-runtime/src/io/github/mqga/preset/NewAdapter.java"
+            added.write_text("class NewAdapter {}\n")
+            self.assertNotEqual(original, ci.version_identity(sources, ci.builder_file_hashes(root)))
+            added.unlink()
+            self.assertEqual(original, ci.version_identity(sources, ci.builder_file_hashes(root)))
+            (root / "presets/default.json").unlink()
+            with self.assertRaisesRegex(ci.BuildError, "Required build recipe file is missing"):
+                ci.builder_file_hashes(root)
 
     def test_version_identity_retains_sources_and_builder_but_not_temporary_qq_url(self):
         base = {"modules": {"XAutoDaily": {"sha": "a"}}, "config": {"modules": ["XAutoDaily"]},

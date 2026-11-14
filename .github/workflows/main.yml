@@ -22,6 +22,10 @@ on:
         description: "即使版本未变也重新打包"
         type: boolean
         default: false
+      publish:
+        description: "校验成功后发布两版 APK；关闭时只保存 Actions 产物"
+        type: boolean
+        default: true
   workflow_call:
     inputs:
       qq_version:
@@ -33,6 +37,9 @@ on:
       force:
         type: boolean
         default: false
+      publish:
+        type: boolean
+        default: true
     secrets:
       CI_ARTIFACT_TOKEN:
         required: false
@@ -47,7 +54,7 @@ concurrency:
 
 jobs:
   build:
-    name: Resolve and verify six modules
+    name: Build and verify preset and blank QQ
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     env:
@@ -58,7 +65,7 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Test module resolution and embedded APK checks
+      - name: Test source resolution and preset build checks
         run: python3 -m unittest discover -s tests -v
 
       - name: Read config.yml
@@ -103,7 +110,7 @@ jobs:
         if: steps.resolve.outputs.patch_needed == 'true'
         uses: android-actions/setup-android@v3
         with:
-          packages: platform-tools
+          packages: "platform-tools platforms;android-35 build-tools;35.0.0"
           log-accepted-android-sdk-licenses: false
 
       - name: Verify APK packages and write module manifest
@@ -111,44 +118,45 @@ jobs:
         id: modules
         run: python3 .github/scripts/ci_modules.py finalize
 
-      - name: Patch QQ with the verified module list
+      - name: Prepare the approved preset loader against exact input hashes
         if: steps.resolve.outputs.patch_needed == 'true'
         env:
-          MODULE_LIST: ${{ steps.modules.outputs.module_list }}
-        run: |
-          python3 - <<'PY'
-          import os
-          import subprocess
-          from pathlib import Path
+          GH_TOKEN: ${{ secrets.CI_ARTIFACT_TOKEN || github.token }}
+        run: python3 .github/scripts/ci_presets.py prepare
 
-          apks = sorted(Path("inputs").glob("QQ-*.apk"))
-          if not apks:
-              raise SystemExit("No QQ APK was downloaded")
-          subprocess.run([
-              "java", "-jar", "LSPatch.jar", *map(str, apks),
-              "-m", os.environ["MODULE_LIST"], "-l", "2", "-o", "dist",
-          ], check=True)
-          PY
+      - name: Build preset and blank APKs from the same locked inputs
+        if: steps.resolve.outputs.patch_needed == 'true'
+        run: python3 .github/scripts/ci_presets.py patch
 
       - name: Check every selected module is embedded byte-for-byte
         if: steps.resolve.outputs.patch_needed == 'true'
         run: python3 .github/scripts/ci_modules.py verify-patched --dist dist
 
-      - name: Upload verified build
+      - name: Verify paired APK identities, signatures and loader differences
+        if: steps.resolve.outputs.patch_needed == 'true'
+        run: python3 .github/scripts/ci_presets.py verify
+
+      - name: Upload both verified variants and their provenance
         if: steps.resolve.outputs.patch_needed == 'true'
         uses: actions/upload-artifact@v7
         with:
           name: QQ-${{ steps.resolve.outputs.qq_version }}-${{ github.run_id }}
           path: |
-            dist/*-lspatched.apk
+            dist/*.apk
             versions.json
             modules.json
             sources.json
+            variants.json
+            preset-effective.json
+            preset-loader.json
+            SHA256SUMS
           if-no-files-found: error
           retention-days: 14
 
-      - name: Publish verified QQ APK and provenance
-        if: steps.resolve.outputs.patch_needed == 'true'
+      - name: Publish both verified QQ variants and provenance
+        # push/schedule have no inputs.publish; only an explicit Boolean false
+        # suppresses publishing, including a reusable workflow invoked by push.
+        if: steps.resolve.outputs.patch_needed == 'true' && toJSON(inputs.publish) != 'false'
         uses: softprops/action-gh-release@v3
         with:
           token: ${{ github.token }}
@@ -158,9 +166,13 @@ jobs:
           body_path: release-notes.md
           fail_on_unmatched_files: true
           files: |
-            dist/*-lspatched.apk
+            dist/*.apk
             versions.json
             modules.json
             sources.json
+            variants.json
+            preset-effective.json
+            preset-loader.json
+            SHA256SUMS
 
 

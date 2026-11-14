@@ -1,35 +1,21 @@
-name: Preset implementation checks
+name: Preset Check
+run-name: "Verify preset and blank QQ on ${{ github.ref_name }}"
+
 on:
   push:
-    branches: [mqga-preset-implementation]
+    branches-ignore: [main]
+  workflow_dispatch:
+
 permissions:
-  contents: read
+  contents: write
   actions: read
+
 jobs:
-  toolchain:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-java@v6
-        with:
-          distribution: temurin
-          java-version: "21"
-      - name: Obtain official loader and Android compile API
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          mkdir -p preset-toolchain
-          gh release download v1.2 -R JingMatrix/LSPatch -p lspatch-v1.2-487-release.jar -D preset-toolchain
-          python3 - <<'PY'
-          import glob, os, shutil
-          apis = glob.glob(os.environ["ANDROID_HOME"] + "/platforms/android-*/android.jar")
-          if not apis:
-              raise SystemExit("Runner has no Android compile API")
-          shutil.copyfile(sorted(apis)[-1], "preset-toolchain/android.jar")
-          PY
-      - uses: actions/upload-artifact@v7
-        with:
-          name: preset-toolchain
-          path: preset-toolchain/*
-          retention-days: 3
-          if-no-files-found: error
+  verify:
+    # A local reusable workflow is resolved at this caller's exact commit,
+    # so a branch check exercises that branch's build and validation code.
+    uses: ./.github/workflows/main.yml
+    with:
+      force: true
+      publish: false
+    secrets: inherit
