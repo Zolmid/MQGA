@@ -379,14 +379,16 @@ def signing_digest(path, signer):
     count = [line for line in lines if line.startswith('Number of signers')]
     if len(count) != 1 or not re.fullmatch(r'Number of signers: 1[ \t]*', count[0]):
         raise PresetError('Expected exactly one verified APK signer for ' + path.name)
-    # AOSP ApkSignerTool uses SDK ranges rather than #N for v3.1 certificates.
-    # Its v3/v3.1 sections may repeat the same certificate for different ranges.
+    # AOSP tools print #N, SDK ranges for v3.1, or scheme-labelled V2 reports.
+    # Their v3/v3.1 sections may repeat a certificate for different ranges.
     # Keep the one-identity rule: no extra signer, rotated/different certificate,
     # missing digest or Source Stamp certificate can stand in for the APK signer.
-    pattern = (r'Signer (?:#([0-9]+)|\(minSdkVersion=[0-9]+'
-               r'(?: \(dev release=true\))?, maxSdkVersion=[0-9]+\))'
+    pattern = (r'(?:Signer (?:#([0-9]+)|\(minSdkVersion=[0-9]+'
+               r'(?: \(dev release=true\))?, maxSdkVersion=[0-9]+\))|V2 Signer:)'
                r' certificate SHA-256 digest: ([a-fA-F0-9]{64})[ \t]*')
-    candidates = [line for line in lines if line.startswith('Signer ') and ' certificate SHA-256 digest:' in line]
+    candidates = [line for line in lines
+                  if re.match(r'(?:Signer\b|V[0-9]+(?:\.[0-9]+)? Signer\b)', line)
+                  and ' certificate SHA-256 digest:' in line]
     records = []
     for line in candidates:
         record = re.fullmatch(pattern, line)

@@ -522,6 +522,32 @@ class SigningDigestTests(unittest.TestCase):
         body = "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE.upper() + "\n"
         self.assertEqual(self.read_report(body), self.CERTIFICATE)
 
+    def test_actual_v2_report_returns_certificate_digest_instead_of_public_key_digest(self):
+        body = (
+            "Verified using v2 scheme (APK Signature Scheme v2): true\n"
+            "Verified using v3.2 scheme (APK Signature Scheme v3.2): false\n"
+            "Number of signers: 1\n"
+            "V2 Signer: certificate DN: CN=xiawanli, OU=aa, O=aa, L=aa, ST=aa, C=CN\n"
+            "V2 Signer: certificate SHA-256 digest: c081890cf2a1adf13e56d7b50a4f3d8edb35b7c46d6ccc732dd997b7e433be1d\n"
+            "V2 Signer: public key SHA-256 digest: 3ae42af0429eaab0265b7ab588ad45490833bdafaede6436b77d5a6e986788b1\n"
+        )
+        self.assertEqual(self.read_report(body, count=""),
+                         "c081890cf2a1adf13e56d7b50a4f3d8edb35b7c46d6ccc732dd997b7e433be1d")
+
+    def test_mixed_numbered_and_v2_signers_with_different_certificates_are_rejected(self):
+        body = (
+            "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE + "\n"
+            "V2 Signer: certificate SHA-256 digest: " + self.OTHER_CERTIFICATE + "\n"
+        )
+        with self.assertRaises(presets.PresetError):
+            self.read_report(body)
+
+    def test_unknown_v2_or_v3_certificate_records_are_not_silently_ignored(self):
+        known = "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE + "\n"
+        for label in ("V2 Signer #1:", "V3 Signer:", "V3.2 Signer:"):
+            with self.subTest(format=label), self.assertRaises(presets.PresetError):
+                self.read_report(known + label + " certificate SHA-256 digest: " + self.CERTIFICATE + "\n")
+
     def test_repeated_same_certificate_across_sdk_ranges_is_allowed(self):
         for development in ("", " (dev release=true)"):
             ranges = (
