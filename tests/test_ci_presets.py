@@ -5,20 +5,24 @@ The checked-in approved profile is exercised with mocked artifact digests;
 separate synthetic inputs exercise real file hashing and paired-output checks.
 """
 
+import base64
 import copy
-from contextlib import contextmanager
+from contextlib import contextmanager, redirect_stdout
 import hashlib
 import importlib.util
 import io
 import json
 import os
 from pathlib import Path
+import struct
 import sys
 import tempfile
 from types import ModuleType, SimpleNamespace
 import unittest
 from unittest import mock
+import warnings
 import zipfile
+import zlib
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -426,6 +430,150 @@ class PairedEditionTests(unittest.TestCase):
         self.loader_info["profile_id"] = "another-profile"
         self.save_documents()
         self.assert_rejected()
+
+
+class EmbeddedOriginalTests(unittest.TestCase):
+    # Real NestedZip output from the reviewed LSPatch.jar, not a hand-written
+    # approximation. Its linked entries intentionally overlap the stored origin.
+    ORIGINAL = (
+        "eJwL8GZmEWEAgS9+ebGrrPhYLrAzMIAwN1AsOSexuDi1WC8ltSK/KDM9My8xRwHIVihIrMzJT0wZFRsVGxUbFRsVGxUbFRtaYgEoFX9o8/5VgkA2CAsDsWNeSlF+ZopvYl5mWmpxiV5Fbg7ckFyoYIA3I5MIM+7GAww0MDKgNiXQNaJbjtD4kx2rUwK8WdlACpiAsApIW3OAeACJyD6H"
+    )
+    NESTED = (
+        "eJwL8GZm4WIAga9+ebGFj2ayneZgYABhSaBYYnFxakmxfk5xQWJJcoZ+flFmemaeXmJBdgBQmwhY2xegtlVWfCwX2BkYQJgbKJacA9JYrJeSWgHRkpijAGQrFCRW5uQnpoyKjYqNio2KjYqNio2KDS0x1Io/tHn/KkEgG4SFgdgxL6UoPzPFNzEvMy21uESvIjcHbkguVDDAm5FJhBl34wEGGhgZUJsS6BrRLUdo/MmO1SkB3qxsIAVMQFgFpK05QDzijTXgwGEsI5MEA+5GFCrA06QiNlzM0cMF4i1mIDwI8h4niAcAY4x4ow=="
+    )
+
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.apk = Path(self.temporary.name) / "nested.apk"
+        self.original = zlib.decompress(base64.b64decode(self.ORIGINAL))
+        self.nested = zlib.decompress(base64.b64decode(self.NESTED))
+        self.apk.write_bytes(self.nested)
+
+    def test_real_linked_origin_hash_matches_original_despite_zipfile_overlap_rejection(self):
+        self.assertEqual(digest(self.original), "a3834a33ca78ccf2df63859c02d129a4e59da2d432f89c58b05f11a6ce19bff2")
+        with zipfile.ZipFile(self.apk) as archive:
+            with self.assertRaises(zipfile.BadZipFile):
+                archive.read(presets.ORIGIN_ENTRY)
+        self.assertEqual(presets.embedded_original_sha256(self.apk, len(self.original)), digest(self.original))
+
+    def test_wrong_expected_size_is_rejected(self):
+        for size in (len(self.original) - 1, len(self.original) + 1):
+            with self.subTest(size=size), self.assertRaises(presets.PresetError):
+                presets.embedded_original_sha256(self.apk, size)
+
+    def test_damaged_local_header_is_rejected(self):
+        with zipfile.ZipFile(self.apk) as archive:
+            offset = archive.getinfo(presets.ORIGIN_ENTRY).header_offset
+        cases = {}
+        damaged = bytearray(self.nested)
+        damaged[offset] ^= 1
+        cases["signature"] = damaged
+        damaged = bytearray(self.nested)
+        struct.pack_into("<H", damaged, offset + 8, zipfile.ZIP_DEFLATED)
+        cases["method"] = damaged
+        damaged = bytearray(self.nested)
+        damaged[offset + 30] ^= 1
+        cases["name"] = damaged
+        for name, contents in cases.items():
+            with self.subTest(header=name):
+                self.apk.write_bytes(contents)
+                with self.assertRaises(presets.PresetError):
+                    presets.embedded_original_sha256(self.apk, len(self.original))
+
+    def test_changed_stored_data_fails_crc_validation(self):
+        with zipfile.ZipFile(self.apk) as archive:
+            offset = archive.getinfo(presets.ORIGIN_ENTRY).header_offset
+        name_length, extra_length = struct.unpack_from("<HH", self.nested, offset + 26)
+        data_offset = offset + 30 + name_length + extra_length
+        damaged = bytearray(self.nested)
+        damaged[data_offset + 100] ^= 1
+        self.apk.write_bytes(damaged)
+        with self.assertRaises(presets.PresetError):
+            presets.embedded_original_sha256(self.apk, len(self.original))
+
+    def test_duplicate_origin_is_rejected(self):
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            with zipfile.ZipFile(self.apk, "w") as archive:
+                archive.writestr(presets.ORIGIN_ENTRY, self.original)
+                archive.writestr(presets.ORIGIN_ENTRY, self.original)
+        with self.assertRaises(presets.PresetError):
+            presets.embedded_original_sha256(self.apk, len(self.original))
+
+    def test_compressed_origin_is_rejected(self):
+        with zipfile.ZipFile(self.apk, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr(presets.ORIGIN_ENTRY, self.original)
+        with self.assertRaises(presets.PresetError):
+            presets.embedded_original_sha256(self.apk, len(self.original))
+
+
+class SigningDigestTests(unittest.TestCase):
+    CERTIFICATE = "ab" * 32
+    OTHER_CERTIFICATE = "cd" * 32
+
+    def read_report(self, body, *, count="Number of signers: 1\n", returncode=0, stderr=""):
+        result = SimpleNamespace(returncode=returncode, stdout="Verifies\n" + count + body,
+                                 stderr=stderr)
+        with mock.patch.object(presets.subprocess, "run", return_value=result), redirect_stdout(io.StringIO()):
+            return presets.signing_digest(Path("sample.apk"), Path("/sdk/apksigner"))
+
+    def test_numbered_signer_digest_is_normalized(self):
+        body = "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE.upper() + "\n"
+        self.assertEqual(self.read_report(body), self.CERTIFICATE)
+
+    def test_repeated_same_certificate_across_sdk_ranges_is_allowed(self):
+        for development in ("", " (dev release=true)"):
+            ranges = (
+                "Signer (minSdkVersion=24, maxSdkVersion=32) certificate SHA-256 digest: "
+                + self.CERTIFICATE + "\n"
+                + "Signer (minSdkVersion=33" + development
+                + ", maxSdkVersion=2147483647) certificate SHA-256 digest: "
+                + self.CERTIFICATE.upper() + "\n"
+            )
+            for prefix in ("", "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE + "\n"):
+                with self.subTest(development=development, numbered_section=bool(prefix)):
+                    self.assertEqual(self.read_report(prefix + ranges), self.CERTIFICATE)
+
+    def test_different_certificates_across_sdk_ranges_are_rejected(self):
+        body = (
+            "Signer (minSdkVersion=28, maxSdkVersion=32) certificate SHA-256 digest: "
+            + self.CERTIFICATE + "\n"
+            "Signer (minSdkVersion=33, maxSdkVersion=2147483647) certificate SHA-256 digest: "
+            + self.OTHER_CERTIFICATE + "\n"
+        )
+        with self.assertRaises(presets.PresetError):
+            self.read_report(body)
+
+    def test_extra_signer_number_is_rejected_even_for_the_same_certificate(self):
+        second = "Signer #2 certificate SHA-256 digest: " + self.CERTIFICATE + "\n"
+        for prefix in ("", "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE + "\n"):
+            with self.subTest(first_signer_present=bool(prefix)), self.assertRaises(presets.PresetError):
+                self.read_report(prefix + second)
+
+    def test_source_stamp_certificate_does_not_change_the_apk_identity(self):
+        body = (
+            "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE + "\n"
+            "Source Stamp Signer certificate SHA-256 digest: " + self.OTHER_CERTIFICATE + "\n"
+        )
+        self.assertEqual(self.read_report(body), self.CERTIFICATE)
+
+    def test_source_stamp_alone_cannot_replace_an_apk_signer(self):
+        body = "Source Stamp Signer certificate SHA-256 digest: " + self.CERTIFICATE + "\n"
+        with self.assertRaises(presets.PresetError):
+            self.read_report(body)
+
+    def test_signer_count_must_be_present_and_exactly_one(self):
+        body = "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE + "\n"
+        for count in ("", "Number of signers: 0\n", "Number of signers: 2\n",
+                      "Number of signers: 1\nNumber of signers: 1\n"):
+            with self.subTest(count=count), self.assertRaises(presets.PresetError):
+                self.read_report(body, count=count)
+
+    def test_failed_verification_is_rejected_despite_a_plausible_digest(self):
+        body = "Signer #1 certificate SHA-256 digest: " + self.CERTIFICATE + "\n"
+        with self.assertRaises(presets.PresetError):
+            self.read_report(body, returncode=1, stderr="DOES NOT VERIFY")
 
 
 if __name__ == "__main__":

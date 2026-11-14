@@ -11,10 +11,12 @@ import os
 from pathlib import Path
 import re
 import shutil
+import struct
 import subprocess
 import sys
 import tempfile
 import zipfile
+import zlib
 
 LOADER_ENTRY = 'assets/lspatch/loader.dex'
 ORIGIN_ENTRY = 'assets/lspatch/origin.apk'
@@ -370,12 +372,81 @@ def find_apksigner():
 def signing_digest(path, signer):
     result = subprocess.run([str(signer), 'verify', '--verbose', '--print-certs', str(path)], text=True,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+    print(f'APK signature report: {path.name}\n{result.stdout}', flush=True)
     if result.returncode:
         raise PresetError(f'APK signature verification failed: {path.name}: {result.stderr[:500]}')
-    digest = re.findall(r'^Signer #\d+ certificate SHA-256 digest: ([a-fA-F0-9]+)$', result.stdout, re.M)
-    if len(digest) != 1:
-        raise PresetError('Expected one signer certificate for ' + path.name)
-    return digest[0].lower()
+    lines = result.stdout.splitlines()
+    count = [line for line in lines if line.startswith('Number of signers')]
+    if len(count) != 1 or not re.fullmatch(r'Number of signers: 1[ \t]*', count[0]):
+        raise PresetError('Expected exactly one verified APK signer for ' + path.name)
+    # AOSP ApkSignerTool uses SDK ranges rather than #N for v3.1 certificates.
+    # Its v3/v3.1 sections may repeat the same certificate for different ranges.
+    # Keep the one-identity rule: no extra signer, rotated/different certificate,
+    # missing digest or Source Stamp certificate can stand in for the APK signer.
+    pattern = (r'Signer (?:#([0-9]+)|\(minSdkVersion=[0-9]+'
+               r'(?: \(dev release=true\))?, maxSdkVersion=[0-9]+\))'
+               r' certificate SHA-256 digest: ([a-fA-F0-9]{64})[ \t]*')
+    candidates = [line for line in lines if line.startswith('Signer ') and ' certificate SHA-256 digest:' in line]
+    records = []
+    for line in candidates:
+        record = re.fullmatch(pattern, line)
+        if record is None:
+            raise PresetError('Unrecognized signer certificate record for ' + path.name)
+        records.append(record.groups(default=''))
+    digests = {digest.lower() for _, digest in records}
+    if not records or any(number not in ('', '1') for number, _ in records) or len(digests) != 1:
+        raise PresetError('Expected one signer certificate identity across all SDK ranges for ' + path.name)
+    return next(iter(digests))
+
+
+def embedded_original_sha256(apk, expected_size):
+    """Hash LSPatch's stored original APK, including its intentional nested links.
+
+    NestedZip exposes original entries in the outer ZIP without duplicating their
+    bytes. Python's general ZipFile.read consequently rejects origin.apk as an
+    overlapping entry. Read only this known, stored entry with explicit size,
+    header, bounds and CRC checks; never disable overlap checks for other entries.
+    """
+    apk = Path(apk)
+    with zipfile.ZipFile(apk) as archive:
+        matches = [entry for entry in archive.infolist() if entry.filename == ORIGIN_ENTRY]
+        if len(matches) != 1:
+            raise PresetError('Expected one nested original QQ entry')
+        entry = matches[0]
+    if (expected_size <= 0 or entry.file_size != expected_size
+            or entry.compress_size != expected_size or entry.compress_type != zipfile.ZIP_STORED
+            or entry.flag_bits & 1):
+        raise PresetError('Nested original QQ must be stored with the exact input size')
+    digest = hashlib.sha256()
+    crc = 0
+    with apk.open('rb') as stream:
+        stream.seek(entry.header_offset)
+        header = stream.read(30)
+        if len(header) != 30:
+            raise PresetError('Truncated original QQ local header')
+        fields = struct.unpack('<4s5H3I2H', header)
+        name_size, extra_size = fields[-2:]
+        if (fields[0] != b'PK\x03\x04' or fields[2] != entry.flag_bits
+                or fields[3] != zipfile.ZIP_STORED or name_size != len(ORIGIN_ENTRY)
+                or stream.read(name_size) != ORIGIN_ENTRY.encode('ascii')):
+            raise PresetError('Unexpected original QQ local header')
+        if not (entry.flag_bits & 8) and (fields[6], fields[7], fields[8]) != (entry.CRC, expected_size, expected_size):
+            raise PresetError('Original QQ local header disagrees with the ZIP directory')
+        offset = entry.header_offset + 30 + name_size + extra_size
+        if offset < 0 or offset + expected_size > apk.stat().st_size:
+            raise PresetError('Original QQ entry exceeds APK bounds')
+        stream.seek(offset)
+        remaining = expected_size
+        while remaining:
+            block = stream.read(min(remaining, 1024 * 1024))
+            if not block:
+                raise PresetError('Truncated nested original QQ entry')
+            digest.update(block)
+            crc = zlib.crc32(block, crc)
+            remaining -= len(block)
+    if crc & 0xffffffff != entry.CRC:
+        raise PresetError('Nested original QQ CRC mismatch')
+    return digest.hexdigest()
 
 
 def verify(args):
@@ -411,7 +482,7 @@ def verify(args):
                 actual_loader = hashlib.sha256(z.read(LOADER_ENTRY)).hexdigest()
                 if actual_loader != loader[edition + '_loader_sha256']:
                     raise PresetError('Edition loader mismatch: ' + path.name)
-                origin = hashlib.sha256(z.read(ORIGIN_ENTRY)).hexdigest()
+                origin = embedded_original_sha256(path, Path(pair['input_path']).stat().st_size)
                 if origin != pair['input_sha256']:
                     raise PresetError('Embedded QQ bytes differ from the locked original input')
                 origins.add(origin)
